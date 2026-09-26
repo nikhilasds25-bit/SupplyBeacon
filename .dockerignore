@@ -1,0 +1,16 @@
+.git
+.gitignore
+.env
+.env.*
+!.env.example
+frontend/node_modules
+frontend/dist
+__pycache__
+*.pyc
+.pytest_cache
+.ipynb_checkpoints
+*.log
+*.tmp
+docs
+tests
+notebooks

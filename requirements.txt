@@ -1,0 +1,13 @@
+﻿pandas
+numpy
+matplotlib
+scikit-learn
+requests
+networkx
+torch
+torch-geometric
+fastapi
+uvicorn
+streamlit
+langgraph==1.2.11
+langchain-core==1.6.3

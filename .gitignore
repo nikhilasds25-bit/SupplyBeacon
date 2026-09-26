@@ -1,0 +1,47 @@
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+
+# Python virtual environments
+.venv/
+venv/
+env/
+Lib/
+Scripts/
+Include/
+pyvenv.cfg
+
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Editor and OS files
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Local logs and temporary files
+*.log
+*.tmp
+# Large/raw datasets
+data/raw/dataco/
+
+# Large experimental model artifact
+models/dataco_shipping/random_forest.joblib
+
+# Local master-data database and generated overlay
+data/master/*.db
+data/master/*.db-*
+data/master/generated/
+# Frontend dependencies and build output
+node_modules/
+frontend/node_modules/
+dist/
+frontend/dist/
+coverage/
+.vite/
