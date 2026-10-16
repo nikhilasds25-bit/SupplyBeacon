@@ -1,0 +1,31 @@
+import {useEffect, useState} from 'react'
+import {Activity, CloudRain, Database, ShieldCheck} from 'lucide-react'
+import {Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts'
+import {getCurrentImpact, getCurrentSnapshot, getHistoricalMetrics} from '../../services/supplyBeaconApi'
+import type {ImpactTrace, Snapshot} from '../../services/supplyBeaconApi'
+
+const levels = ['Low', 'Medium', 'High', 'Critical', 'Unavailable']
+const display = (value: unknown) => value === undefined || value === null || value === '' ? 'Unavailable' : String(value)
+
+export default function AnalyticsPage() {
+  const [data, setData] = useState<Snapshot | null>(null)
+  const [impact, setImpact] = useState<ImpactTrace[] | null>(null)
+  const [historical, setHistorical] = useState<Record<string, unknown> | null>(null)
+  const [error, setError] = useState(false)
+  const [reload, setReload] = useState(0)
+  useEffect(() => {let active = true; setError(false); setData(null); Promise.all([getCurrentSnapshot(), getCurrentImpact()]).then(([snapshot, traces]) => {if (active) {setData(snapshot); setImpact(traces)}}).catch(() => {if (active) setError(true)}); getHistoricalMetrics().then(result => {if (active) setHistorical(result)}).catch(() => {if (active) setHistorical(null)}); return () => {active = false}}, [reload])
+  if (error) return <section className="card empty-card"><Database/><h2>Current analytics unavailable</h2><p className="muted">The current-state API could not be reached. No zero or Low values have been inferred.</p><button className="primary compact-btn" onClick={() => setReload(value => value + 1)}>Retry</button></section>
+  if (!data || !impact) return <div className="loading">Loading current analytics…</div>
+  const warehouseCoverage = data.warehouses.filter(item => item.inventory_relationship_available === true).length
+  const catalogOnly = data.warehouses.filter(item => item.catalog_only === true).length
+  const availableRisk = data.warehouses.filter(item => typeof item.risk_score === 'number').length
+  const productIds = new Set(impact.flatMap(trace => trace.product_ids))
+  const riskDistribution = levels.map(level => ({name: level, count: data.entities.filter(entity => (entity.risk_level || 'Unavailable') === level).length}))
+  const severity = ['Low', 'Medium', 'High', 'Critical', 'Unavailable'].map(name => ({name, count: data.events.filter(event => (event.severity || 'Unavailable') === name).length}))
+  const temporal = ['ACTIVE', 'UPCOMING', 'EXPIRED', 'UNKNOWN'].map(name => ({name, count: data.liveSituation.signals.filter(signal => signal.event_status === name).length}))
+  return <><div className="page-heading"><div><p className="eyebrow">AI & ANALYTICS · CURRENT SNAPSHOT</p><h1>Advanced Analytics</h1><p className="muted">Descriptive counts from current APIs. This is not a historical risk trend or probability model.</p></div><span className="badge">RULE-BASED RISK</span></div><div className="analytics-summary-grid"><div className="analytics-summary card"><ShieldCheck/><small>Warehouse risk available</small><strong>{availableRisk} / {data.warehouses.length}</strong><span>{data.warehouses.length - availableRisk} unavailable</span></div><div className="analytics-summary card"><Activity/><small>Operational exposure</small><strong>{impact.length} event traces</strong><span>{productIds.size} products on valid STORED_AT paths</span></div><div className="analytics-summary card"><Database/><small>Warehouse relationships</small><strong>{warehouseCoverage} inventory-backed</strong><span>{catalogOnly} catalog-only references</span></div><div className="analytics-summary card"><CloudRain/><small>Weather coverage</small><strong>{data.liveSituation.coverage.represented} / {data.liveSituation.coverage.required}</strong><span>{data.liveSituation.coverage.missing.length} missing locations</span></div></div><div className="analytics-grid"><Chart title="Entity risk distribution" data={riskDistribution} note="Unavailable is separate from Low."/><Chart title="Operational event severity" data={severity} note="Only eligible current operational events."/><Chart title="Candidate signal status" data={temporal} note="ACTIVE does not imply operational disruption."/><section className="card"><p className="eyebrow">HISTORICAL DATACO · SEPARATE MODEL</p><h3>Historical Shipping Prediction</h3>{historical ? <><div className="insight-row"><span>Model</span><b>{display(historical.model)}</b></div><div className="insight-row"><span>Test MAE</span><b>{display(historical.mae)}</b></div><div className="insight-row"><span>Test RMSE</span><b>{display(historical.rmse)}</b></div><div className="insight-row"><span>Test R²</span><b>{display(historical.r2)}</b></div><p className="muted">These are historical shipping-days model metrics, not current-risk accuracy.</p></> : <p className="muted">Historical DataCo metrics unavailable from the existing API.</p>}</section></div><section className="card"><div className="card-title"><div><p className="eyebrow">CURRENT EVENT EVIDENCE</p><h3>Operational events by source</h3></div><span className="muted">{data.events.length} events</span></div>{data.events.length ? data.events.map(event => <div className="insight-row" key={String(event.event_id)}><span>{display(event.title || event.event_type)}<small>{display(event.location)} · {display(event.source_channel)}</small></span><b>{display(event.severity)} · {display(event.event_status)}</b></div>) : <p className="muted">No operational disruptions are currently identified.</p>}</section></>
+}
+
+function Chart({title, data, note}: {title: string; data: {name: string; count: number}[]; note: string}) {
+  return <section className="card analytics-chart-card"><p className="eyebrow">CURRENT API DISTRIBUTION</p><h3>{title}</h3><ResponsiveContainer width="100%" height={230}><BarChart data={data} margin={{top: 8, right: 8, left: -22, bottom: 8}}><CartesianGrid stroke="#2b3b56" strokeDasharray="3 3"/><XAxis dataKey="name" tick={{fontSize: 10}}/><YAxis allowDecimals={false} tick={{fontSize: 10}}/><Tooltip/><Bar dataKey="count" fill="#ff679b" radius={[4,4,0,0]}/></BarChart></ResponsiveContainer><p className="muted">{note}</p></section>
+}
