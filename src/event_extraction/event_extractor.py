@@ -11,8 +11,7 @@ import re
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Optional
-
+from typing import Any, Dict, List, Mapping, Optional
 import pandas as pd
 
 import sys
@@ -26,6 +25,15 @@ from event_models import (
     LOCATION_KEYWORDS,
     LOCATIONS,
     SEVERITY_DEFAULT,
+)
+from src.event_extraction.business_disruption_rules import (
+    OPERATIONAL_DISRUPTION,
+    classify_news_evidence,
+    classify_weather_evidence,
+    explicit_statewide_scope,
+    matching_disruption_rules,
+    LEGACY_EVENT_FAMILY_ALIASES,
+    TRANSPORT_CONTEXT_REQUIRED_FAMILIES,
 )
 from utils import (
     EVENTS_DIR,
@@ -42,6 +50,14 @@ from temporal_validity import extract_news_validity
 # Output paths
 EVENTS_CSV = EVENTS_DIR / "events.csv"
 EVENTS_JSON = EVENTS_DIR / "events.json"
+STATE_LOCATION_NAMES = {
+    "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh",
+    "Goa", "Gujarat", "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka",
+    "Kerala", "Madhya Pradesh", "Maharashtra", "Manipur", "Meghalaya", "Mizoram",
+    "Nagaland", "Odisha", "Punjab", "Rajasthan", "Sikkim", "Tamil Nadu",
+    "Telangana", "Tripura", "Uttar Pradesh", "Uttarakhand", "West Bengal",
+    "Delhi", "Jammu and Kashmir", "Ladakh", "Puducherry",
+}
 
 
 def configure_logging() -> None:
@@ -66,18 +82,146 @@ def find_keywords_in_text(text: str, keywords: Dict[str, str]) -> List[str]:
     return found
 
 
-def detect_locations(text: str) -> List[str]:
-    """Detect known locations and regions in the provided text."""
-    found: List[str] = []
+def detect_locations(text: str, dynamic_aliases: Mapping[str, List[str]] | None = None) -> List[str]:
+    """Detect graph-known geography; legacy keywords serve standalone extraction only."""
     if not text:
-        return found
-    for canonical, aliases in LOCATION_KEYWORDS.items():
+        return []
+    combined = dynamic_aliases if dynamic_aliases is not None else LOCATION_KEYWORDS
+    candidates = []
+    for canonical, aliases in combined.items():
         for alias in aliases:
             pattern = re.escape(alias)
-            if re.search(rf"\b{pattern}\b", text, flags=re.I):
-                found.append(canonical)
-                break
-    return list(dict.fromkeys(found))
+            for match in re.finditer(rf"\b{pattern}\b", text, flags=re.I):
+                candidates.append((match.start(), match.end(), canonical))
+    # Longer explicit place names win over embedded tokens (Greater Noida/Noida).
+    candidates.sort(key=lambda item: (-(item[1] - item[0]), item[0]))
+    selected = []
+    for candidate in candidates:
+        if not any(candidate[0] >= other[0] and candidate[1] <= other[1] for other in selected):
+            selected.append(candidate)
+    return list(dict.fromkeys(item[2] for item in sorted(selected)))
+
+
+def _transport_location_details(
+    text: str,
+    dynamic_aliases: Mapping[str, List[str]] | None,
+) -> dict[str, Any]:
+    """Keep destinations and route mentions out of transport disruption geography."""
+    aliases = dynamic_aliases if dynamic_aliases is not None else LOCATION_KEYWORDS
+    candidates = []
+    for canonical, values in aliases.items():
+        for alias in values:
+            pattern = re.escape(alias).replace(r"\ ", r"\s+")
+            for match in re.finditer(rf"\b{pattern}\b", text, flags=re.I):
+                candidates.append((match.start(), match.end(), canonical))
+    candidates.sort(key=lambda item: (-(item[1] - item[0]), item[0]))
+    selected = []
+    for candidate in candidates:
+        if not any(candidate[0] >= other[0] and candidate[1] <= other[1] for other in selected):
+            selected.append(candidate)
+
+    mentions = []
+    physical_locations = []
+    infrastructure = re.compile(
+        r"\b(?:roads?|highways?|motorways?|expressways?|bridges?|flyovers?|"
+        r"traffic|landslides?|freight corridors?)\b",
+        re.I,
+    )
+    for start, end, canonical in sorted(selected):
+        sentence_start = max(
+            (match.end() for match in re.finditer(r"[.!?;\n]", text[:start])),
+            default=0,
+        )
+        sentence_end_match = re.search(r"[.!?;\n]", text[end:])
+        sentence_end = end + sentence_end_match.start() if sentence_end_match else len(text)
+        sentence = text[sentence_start:sentence_end]
+        local_start, local_end = start - sentence_start, end - sentence_start
+        prefix = sentence[:local_start]
+        suffix = sentence[local_end:]
+
+        destination = bool(re.search(
+            r"\b(?:heading|headed|travell?ing|driving|journeying|bound)\s+"
+            r"(?:to|toward|towards|for)\s+[^.!?;]{0,100}$",
+            prefix,
+            re.I,
+        ))
+        if not destination:
+            destination = bool(re.match(
+                r"\s*(?:is\s+)?(?:the\s+)?destination\b",
+                suffix,
+                re.I,
+            ))
+        origin = bool(re.search(
+            r"\b(?:departing|originating)\s+(?:from|in)\s+[^.!?;]{0,80}$|"
+            r"\bfrom\s+[^.!?;]{0,60}$",
+            prefix,
+            re.I,
+        ))
+        route_reference = bool(re.search(
+            r"\b(?:route|road|journey)\s+(?:to|toward|towards|via|through)\s+[^.!?;]{0,80}$",
+            prefix,
+            re.I,
+        ))
+
+        before_location = bool(re.search(
+            r"\b(?:in|near|at|outside|within|around|along|on|across|throughout)\s+(?:the\s+)?$",
+            prefix,
+            re.I,
+        ))
+        after_location = bool(re.match(
+            r"\s*(?:['’]s\s+)?(?:roads?|highways?|motorways?|expressways?|bridges?|flyovers?)\b",
+            suffix,
+            re.I,
+        ))
+        physical = (
+            infrastructure.search(sentence) is not None
+            and (before_location or after_location)
+            and not (destination or origin or route_reference)
+        )
+
+        if destination:
+            role = "DESTINATION"
+        elif origin:
+            role = "ORIGIN"
+        elif route_reference:
+            role = "ROUTE_REFERENCE"
+        elif physical:
+            role = "DISRUPTION_LOCATION"
+            physical_locations.append(canonical)
+        else:
+            role = "OTHER_MENTIONED_LOCATION"
+        mentions.append({"location": canonical, "role": role})
+
+    statewide_locations = [
+        location for location in dict.fromkeys(physical_locations)
+        if location in STATE_LOCATION_NAMES and explicit_statewide_scope(text, location)
+    ]
+    if statewide_locations:
+        locations = statewide_locations
+        scope = "STATEWIDE"
+    else:
+        locations = [
+            location for location in dict.fromkeys(physical_locations)
+            if location not in STATE_LOCATION_NAMES
+        ]
+        scope = "LOCALIZED" if locations else "UNRESOLVED"
+    return {
+        "location": ", ".join(locations) if locations else "Unknown",
+        "scope": scope,
+        "mentions": mentions,
+    }
+
+
+def _event_location_scope(text: str, locations: list[str]) -> str:
+    statewide = [
+        location for location in locations
+        if location in STATE_LOCATION_NAMES and explicit_statewide_scope(text, location)
+    ]
+    if statewide:
+        return "STATEWIDE"
+    if any(location not in STATE_LOCATION_NAMES for location in locations):
+        return "LOCALIZED"
+    return "UNRESOLVED"
 
 
 def detect_entities(text: str) -> List[str]:
@@ -144,52 +288,9 @@ def choose_severity(event_type: Optional[str]) -> str:
     return SEVERITY_DEFAULT.get(event_type, "Medium")
 
 
-OPERATIONAL_EVENT_TERMS = (
-    "factory shutdown",
-    "port congestion",
-    "transport strike",
-    "road closure",
-    "flood",
-    "cyclone",
-    "severe rainfall",
-    "heavy rain",
-    "production halt",
-    "supply shortage",
-    "component shortage",
-    "semiconductor shortage",
-    "chip shortage",
-    "logistics disruption",
-    "warehouse closure",
-    "power outage",
-    "production disruption",
-)
-RISK_WARNING_TERMS = (
-    "warning",
-    "alert",
-    "forecast",
-    "expected",
-    "threat",
-    "risk",
-    "may disrupt",
-    "could disrupt",
-)
-COMMENTARY_TERMS = (
-    "experts",
-    "industry leaders",
-    "should improve",
-    "must move",
-    "strategy",
-    "market expected to grow",
-    "call for",
-    "panel discussion",
-)
 NEGATED_EVENT_PHRASES = (
     "no rain", "no heavy rain", "largely dry", "rain unlikely",
     "no disruption", "no shortage", "no strike", "no flooding",
-)
-DOMAIN_RELEVANCE_TERMS = (
-    "electronics", "semiconductor", "component", "logistics", "transport",
-    "port", "warehouse", "manufactur", "supply chain", "shipping",
 )
 
 
@@ -205,21 +306,9 @@ def _is_negated(text: str, phrase: str) -> bool:
 
 
 def classify_news_event(title: str, description: str) -> tuple[str, bool]:
-    """Classify news deterministically without treating commentary as disruption."""
-    text = f"{title} {description}".lower()
-    matched_terms = [
-        term for term in OPERATIONAL_EVENT_TERMS
-        if term in text and not _is_negated(text, term)
-    ]
-    if not matched_terms:
-        if any(term in text for term in COMMENTARY_TERMS):
-            return "INDUSTRY_COMMENTARY", False
-        return "IRRELEVANT", False
-    if not any(term in text for term in DOMAIN_RELEVANCE_TERMS):
-        return "ACTUAL_DISRUPTION", False
-    if any(term in text for term in RISK_WARNING_TERMS):
-        return "RISK_WARNING", True
-    return "ACTUAL_DISRUPTION", True
+    """Compatibility wrapper around the explicit disruption-evidence registry."""
+    details = classify_news_evidence(title, description)
+    return str(details["event_class"]), bool(details["operationally_relevant"])
 
 
 def _weather_event_type(record: Dict[str, Any], description: str) -> Optional[str]:
@@ -265,13 +354,17 @@ def _weather_event_type(record: Dict[str, Any], description: str) -> Optional[st
 
 
 def _weather_is_operationally_relevant(record: Dict[str, Any], event_type: str) -> bool:
-    """Use only explicit API warning/severity evidence for operational impact."""
-    if event_type in {"Heavy Rain", "Thunderstorm", "Storm", "Flood", "Cyclone", "Extreme Heat"}:
-        return True
-    if event_type != "Moderate Rain" or not isinstance(record, dict):
+    """Weather signals need a validated alert and explicit operational effect."""
+    if not isinstance(record, dict):
         return False
-    raw_alert = record.get("alerts") or record.get("alert")
-    return bool(raw_alert)
+    alerts = record.get("alerts") or record.get("alert") or []
+    alert_text = " ".join(
+        str(item.get("event") or item.get("headline") or item.get("description") or "")
+        for item in alerts if isinstance(item, dict)
+    )
+    description = (record.get("weather") or [{}])[0].get("description", "")
+    details = classify_weather_evidence(event_type, str(description), alert_text)
+    return details["evidence_level"] == OPERATIONAL_DISRUPTION
 
 
 def _weather_temporal_fields(record: Dict[str, Any], date: str) -> dict[str, Any]:
@@ -313,7 +406,11 @@ def normalize_date(value: Optional[str]) -> Optional[str]:
             return None
 
 
-def article_to_events(article: Dict[str, Any], source_file: Path) -> List[Dict[str, Any]]:
+def article_to_events(
+    article: Dict[str, Any],
+    source_file: Path,
+    dynamic_location_aliases: Mapping[str, List[str]] | None = None,
+) -> List[Dict[str, Any]]:
     events: List[Dict[str, Any]] = []
     norm = normalize_article(article)
     title = norm.get("title", "")
@@ -323,30 +420,68 @@ def article_to_events(article: Dict[str, Any], source_file: Path) -> List[Dict[s
     # phrases such as "today" would otherwise acquire an invented validity date.
     published = normalize_date(date_raw)
 
-    text_blob = " ".join([title or "", description or ""])
+    text_blob = ". ".join(part for part in (title or "", description or "") if part)
 
-    matched = sorted(
-        set(
-            event_type
-            for phrase, event_type in EVENT_KEYWORDS.items()
-            if re.search(rf"\b{re.escape(phrase)}\b", text_blob, flags=re.I)
-            and not _is_negated(text_blob, phrase)
-        )
-    )
-    locations = detect_locations(text_blob)
+    legacy_matches = {
+        event_type
+        for phrase, event_type in EVENT_KEYWORDS.items()
+        if re.search(rf"\b{re.escape(phrase)}\b", text_blob, flags=re.I)
+        and not _is_negated(text_blob, phrase)
+    }
+    disruption_matches = matching_disruption_rules(text_blob)
+    matched_specs: list[tuple[str | None, str]] = []
+    matched_families = {rule.family for rule, _ in disruption_matches}
+    for rule, sentence in disruption_matches:
+        event_type = rule.event_type
+        if rule.family == "PORT_DISRUPTION" and re.search(r"\bcongestion\b", sentence, re.I):
+            event_type = "Port Congestion"
+        matched_specs.append((rule.family, event_type))
+    for event_type in sorted(legacy_matches):
+        if matched_families.intersection(LEGACY_EVENT_FAMILY_ALIASES.get(event_type, set())):
+            continue
+        matched_specs.append((None, event_type))
+    matched_specs = list(dict.fromkeys(matched_specs))
+    locations = detect_locations(text_blob, dynamic_location_aliases)
     entities = detect_entities(text_blob)
 
-    if not matched:
+    if not matched_specs:
         return []
 
-    # Create one event per matched event type
-    for ev in matched:
+    for family, ev in matched_specs:
+        transport_location = (
+            _transport_location_details(text_blob, dynamic_location_aliases)
+            if family in TRANSPORT_CONTEXT_REQUIRED_FAMILIES
+            else None
+        )
+        statewide_locations = [
+            location for location in locations
+            if location in STATE_LOCATION_NAMES and explicit_statewide_scope(text_blob, location)
+        ]
+        if transport_location:
+            event_location = transport_location["location"]
+            event_location_scope = transport_location["scope"]
+        elif statewide_locations:
+            event_location = ", ".join(statewide_locations)
+            event_location_scope = "STATEWIDE"
+        else:
+            event_location = ", ".join(locations) if locations else "Unknown"
+            event_location_scope = _event_location_scope(text_blob, locations)
+        if family is None and ev == "Heavy Rain":
+            if re.search(r"\blight rain\b", text_blob, flags=re.I):
+                ev = "Light Rain"
+            elif not re.search(
+                r"\b(?:heavy|very heavy|extreme|severe|torrential)\s+rain(?:fall)?\b",
+                text_blob,
+                flags=re.I,
+            ):
+                ev = "Rain"
         keyword_matches = sum(
             1
             for phrase in event_phrases_for_type(ev)
             if re.search(rf"\b{re.escape(phrase)}\b", text_blob, flags=re.I)
         )
-        severity = choose_severity(ev)
+        classification = classify_news_evidence(title, description, family if family is not None else "")
+        severity = classification["severity"] if family else choose_severity(ev)
         confidence = compute_confidence(
             event_type=ev,
             title=title,
@@ -361,7 +496,12 @@ def article_to_events(article: Dict[str, Any], source_file: Path) -> List[Dict[s
             "Event_Type": ev,
             "Title": title or (ev + " reported"),
             "Description": description or "",
-            "Location": ", ".join(locations) if locations else "Unknown",
+            "Location": event_location,
+            "Location_Scope": event_location_scope,
+            "Location_Mentions": transport_location["mentions"] if transport_location else [
+                {"location": location, "role": "OTHER_MENTIONED_LOCATION"}
+                for location in locations
+            ],
             "Affected_Entity": ", ".join(entities) if entities else "Unknown",
             "Category": "News",
             "Severity": severity,
@@ -372,12 +512,29 @@ def article_to_events(article: Dict[str, Any], source_file: Path) -> List[Dict[s
             "source_channel": norm.get("source_channel", "NEWS_API"),
             "source_references": norm.get("source_references", []),
         }
-        event_class, operational = classify_news_event(title, description)
-        event["Event_Class"] = event_class
-        event["Operationally_Relevant"] = operational
+        event["Event_Class"] = classification["event_class"]
+        event["Operationally_Relevant"] = classification["operationally_relevant"]
+        event["Evidence_Level"] = classification["evidence_level"]
+        event["Event_Family"] = classification["event_family"]
+        event["Impact_Type"] = classification["impact_type"]
+        event["Impact_Level"] = classification["severity"]
+        event["Evidence_Directness"] = classification["directness"]
+        event["Classification_Reason"] = classification["classification_reason"]
+        event["matched_operational_evidence"] = classification["matched_evidence"]
+        event["operational_relevance_basis"] = classification["evidence_level"]
         event.update(extract_news_validity(title, description, published))
-        if not operational:
-            event["Event_Type"] = "Industry Commentary" if event_class == "INDUSTRY_COMMENTARY" else "Irrelevant"
+        if not classification["operationally_relevant"] and not family:
+            weather_signal = ev in {"Rain", "Heavy Rain", "Light Rain", "Moderate Rain", "Thunderstorm", "Storm", "Extreme Heat"}
+            event["Event_Type"] = ev if weather_signal else (
+                "Industry Commentary" if classification["event_class"] == "INDUSTRY_COMMENTARY"
+                else "Irrelevant"
+            )
+            if weather_signal:
+                event["Event_Class"] = "RISK_WARNING"
+                event["Classification_Reason"] = (
+                    "Classified as a signal only because weather wording lacks a validated severe-weather "
+                    "alert or direct logistics/facility effect."
+                )
             event["Severity"] = "Low"
             event["Confidence"] = min(confidence, 0.2)
         events.append(event)
@@ -386,6 +543,11 @@ def article_to_events(article: Dict[str, Any], source_file: Path) -> List[Dict[s
 
 def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> List[Dict[str, Any]]:
     events: List[Dict[str, Any]] = []
+    validation_status = str(record.get("location_validation_status") or "").strip().upper()
+    if validation_status and validation_status != "VALIDATED":
+        return events
+    if str(record.get("source_channel") or "").strip().upper() == "WEATHERAPI" and validation_status != "VALIDATED":
+        return events
     norm = normalize_weather_record(city, record)
     desc = norm.get("description") or ""
     ts = norm.get("timestamp")
@@ -398,6 +560,13 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
         detected = detect_locations(city)
         location = detected[0] if detected else city
 
+    raw = norm.get("raw", record)
+    raw_alerts = raw.get("alerts") or raw.get("alert") or []
+    alert_text = " ".join(
+        str(item.get("event") or item.get("headline") or item.get("description") or "")
+        for item in raw_alerts if isinstance(item, dict)
+    )
+
     if matched:
         for ev in matched:
             keyword_matches = sum(
@@ -405,7 +574,6 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
                 for phrase in event_phrases_for_type(ev)
                 if re.search(rf"\b{re.escape(phrase)}\b", desc, flags=re.I)
             )
-            severity = choose_severity(ev)
             confidence = compute_confidence(
                 event_type=ev,
                 title="",
@@ -414,7 +582,8 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
                 entity_found=False,
                 keyword_matches=keyword_matches,
             )
-            operationally_relevant = _weather_is_operationally_relevant(norm.get("raw", record), ev)
+            classification = classify_weather_evidence(ev, desc, alert_text)
+            operationally_relevant = classification["evidence_level"] == OPERATIONAL_DISRUPTION
             event = {
                 "Event_ID": None,
                 "Date": date,
@@ -424,14 +593,21 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
                 "Location": location,
                 "Affected_Entity": "Unknown",
                 "Category": "Weather",
-                "Severity": severity,
+                "Severity": classification["severity"],
                 "Source": source_file.name,
                 "Confidence": confidence,
-                "Event_Class": "ACTUAL_DISRUPTION" if operationally_relevant else "RISK_WARNING",
+                "Event_Class": classification["event_class"],
                 "Operationally_Relevant": operationally_relevant,
+                "Evidence_Level": classification["evidence_level"],
+                "Event_Family": classification["event_family"],
+                "Impact_Type": classification["impact_type"],
+                "Impact_Level": classification["severity"],
+                "Evidence_Directness": classification["directness"],
+                "Classification_Reason": classification["classification_reason"],
+                "matched_operational_evidence": classification["matched_evidence"],
+                "operational_relevance_basis": classification["evidence_level"],
                 "source_channel": (norm.get("raw") or {}).get("source_channel", "OPENWEATHER"),
             }
-            raw_alerts = (norm.get("raw") or {}).get("alerts") or []
             if raw_alerts and isinstance(raw_alerts[0], dict):
                 alert = raw_alerts[0]
                 event.update({
@@ -446,7 +622,6 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
     else:
         if desc and re.search(r"heavy .*rain|heavy rain", desc, flags=re.I):
             ev = "Heavy Rain"
-            severity = choose_severity(ev)
             confidence = compute_confidence(
                 event_type=ev,
                 title="",
@@ -455,6 +630,7 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
                 entity_found=False,
                 keyword_matches=1,
             )
+            classification = classify_weather_evidence(ev, desc, alert_text)
             event = {
                     "Event_ID": None,
                     "Date": date,
@@ -464,9 +640,19 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
                     "Location": location,
                     "Affected_Entity": "Unknown",
                     "Category": "Weather",
-                    "Severity": severity,
+                    "Severity": classification["severity"],
                     "Source": source_file.name,
                     "Confidence": confidence,
+                    "Event_Class": classification["event_class"],
+                    "Operationally_Relevant": classification["operationally_relevant"],
+                    "Evidence_Level": classification["evidence_level"],
+                    "Event_Family": classification["event_family"],
+                    "Impact_Type": classification["impact_type"],
+                    "Impact_Level": classification["severity"],
+                    "Evidence_Directness": classification["directness"],
+                    "Classification_Reason": classification["classification_reason"],
+                    "matched_operational_evidence": classification["matched_evidence"],
+                    "operational_relevance_basis": classification["evidence_level"],
                     "source_channel": (norm.get("raw") or {}).get("source_channel", "OPENWEATHER"),
                 }
             event.update(_weather_temporal_fields(norm.get("raw", record), date))
@@ -476,7 +662,7 @@ def weather_to_events(city: str, record: Dict[str, Any], source_file: Path) -> L
 
 
 def deduplicate_events(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
-    seen = set()
+    seen: dict[tuple[Any, ...], Dict[str, Any]] = {}
     unique: List[Dict[str, Any]] = []
     for ev in events:
         key = (
@@ -486,8 +672,13 @@ def deduplicate_events(events: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
             ev.get("Title", ""),
         )
         if key in seen:
+            existing = seen[key]
+            refs = existing.setdefault("source_references", [])
+            for reference in ev.get("source_references", []):
+                if reference not in refs:
+                    refs.append(reference)
             continue
-        seen.add(key)
+        seen[key] = ev
         unique.append(ev)
     return unique
 

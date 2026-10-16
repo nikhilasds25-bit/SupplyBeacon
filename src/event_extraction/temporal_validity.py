@@ -164,6 +164,9 @@ def apply_runtime_temporal_status(event: dict[str, Any], now: datetime | None = 
 
 def is_currently_eligible(event: dict[str, Any], now: datetime | None = None) -> bool:
     """Only active operational events contribute to current operational risk."""
+    evidence_level = event.get("Evidence_Level")
+    if evidence_level and evidence_level != "OPERATIONAL_DISRUPTION":
+        return False
     return bool(event.get("Operationally_Relevant") is True) and (
         apply_runtime_temporal_status(event, now=now)["event_status"] == "ACTIVE"
     )
