@@ -1,0 +1,142 @@
+{
+  "graph_validation": {
+    "unique_node_ids": true,
+    "node_count": 3144,
+    "edge_count": 9350,
+    "missing_endpoints": [],
+    "unexpected_node_types": [],
+    "unexpected_edge_types": [],
+    "self_loops": [],
+    "node_attr_issues": [],
+    "event_attr_issues": [],
+    "node_type_counts": {
+      "Product": 2460,
+      "Supplier": 18,
+      "Brand": 43,
+      "Category": 3,
+      "Warehouse": 74,
+      "Location": 60,
+      "ProductModel": 482,
+      "Event": 4
+    },
+    "edge_type_counts": {
+      "BELONGS_TO": 2460,
+      "STORED_AT": 2478,
+      "SUPPLIES": 20,
+      "PRODUCES": 2460,
+      "OFFERS": 482,
+      "LOCATED_IN": 82,
+      "ASSOCIATED_WITH_BRAND": 66,
+      "CATALOG_ASSOCIATED_WITH": 1298,
+      "AFFECTS": 4
+    },
+    "curated_inventory_violations": []
+  },
+  "degree_stats": {
+    "Product": {
+      "min": 3,
+      "max": 3,
+      "avg": 3.0,
+      "count": 2460
+    },
+    "Supplier": {
+      "min": 2,
+      "max": 4,
+      "avg": 2.11,
+      "count": 18
+    },
+    "Brand": {
+      "min": 4,
+      "max": 911,
+      "avg": 70.42,
+      "count": 43
+    },
+    "Category": {
+      "min": 540,
+      "max": 960,
+      "avg": 820.0,
+      "count": 3
+    },
+    "Warehouse": {
+      "min": 5,
+      "max": 913,
+      "avg": 53.05,
+      "count": 74
+    },
+    "Location": {
+      "min": 1,
+      "max": 5,
+      "avg": 1.4,
+      "count": 60
+    },
+    "ProductModel": {
+      "min": 2,
+      "max": 11,
+      "avg": 3.69,
+      "count": 482
+    },
+    "Event": {
+      "min": 0,
+      "max": 2,
+      "avg": 1.0,
+      "count": 4
+    }
+  },
+  "edge_stats": {
+    "edges_by_relationship": {
+      "BELONGS_TO": 2460,
+      "STORED_AT": 2478,
+      "SUPPLIES": 20,
+      "PRODUCES": 2460,
+      "OFFERS": 482,
+      "LOCATED_IN": 82,
+      "ASSOCIATED_WITH_BRAND": 66,
+      "CATALOG_ASSOCIATED_WITH": 1298,
+      "AFFECTS": 4
+    },
+    "event_edges": 4,
+    "affects_edges": 4,
+    "temporal_edges": 0
+  },
+  "event_summary": {
+    "total_events": 4,
+    "connected_events": 2,
+    "unconnected_events": 2,
+    "affects_relationships": 4,
+    "suspicious_event_issues": [
+      {
+        "event_id": "EVENT:1",
+        "reason": "Event with Unknown affected entity"
+      },
+      {
+        "event_id": "EVENT:2",
+        "reason": "Event has no connected nodes"
+      },
+      {
+        "event_id": "EVENT:2",
+        "reason": "Event with Unknown location"
+      },
+      {
+        "event_id": "EVENT:2",
+        "reason": "Event with Unknown affected entity"
+      },
+      {
+        "event_id": "EVENT:3",
+        "reason": "Event has no connected nodes"
+      },
+      {
+        "event_id": "EVENT:3",
+        "reason": "Event with Unknown location"
+      },
+      {
+        "event_id": "EVENT:3",
+        "reason": "Event with Unknown affected entity"
+      },
+      {
+        "event_id": "EVENT:4",
+        "reason": "Event with Unknown affected entity"
+      }
+    ]
+  },
+  "suspicious_relationships": []
+}
