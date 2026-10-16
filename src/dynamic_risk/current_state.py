@@ -2,7 +2,9 @@
 from __future__ import annotations
 
 import json
+import logging
 import os
+import shutil
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
@@ -12,7 +14,49 @@ import pandas as pd
 from src.event_extraction.temporal_validity import apply_runtime_temporal_status, is_currently_eligible
 
 BASE_DIR = Path(__file__).resolve().parents[2]
-CURRENT_DIR = BASE_DIR / "data" / "current"
+CURRENT_DIR = Path(
+    os.getenv("SUPPLYBEACON_CURRENT_DATA_DIR") or BASE_DIR / "data" / "current"
+).expanduser()
+CURRENT_SEED_DIR = BASE_DIR / "deploy" / "seed" / "current"
+CURRENT_SEED_FILES = (
+    "current_weather.json",
+    "current_events.json",
+    "current_business_impacts.csv",
+    "current_supply_chain_graph.graphml",
+    "current_risk_scores.csv",
+    "current_run_metadata.json",
+)
+
+
+def bootstrap_current_data() -> bool:
+    """Seed an empty persistent current-data directory without replacing state."""
+    seed_dir = CURRENT_SEED_DIR
+    if CURRENT_DIR.resolve() == seed_dir.resolve():
+        raise ValueError("Current runtime storage must be separate from the immutable deployment seed")
+
+    CURRENT_DIR.mkdir(parents=True, exist_ok=True)
+    if any(CURRENT_DIR.iterdir()):
+        return False
+
+    if not seed_dir.is_dir():
+        logging.warning(
+            "No deployment current-data seed is available at %s; persistent current data starts empty",
+            seed_dir,
+        )
+        return False
+
+    missing = [name for name in CURRENT_SEED_FILES if not (seed_dir / name).is_file()]
+    if missing:
+        raise RuntimeError(f"Deployment current-data seed is incomplete; missing files: {', '.join(missing)}")
+
+    seed_files = [seed_dir / name for name in CURRENT_SEED_FILES]
+    for source in seed_files:
+        destination = CURRENT_DIR / source.name
+        if not destination.exists():
+            shutil.copy2(source, destination)
+
+    logging.info("Bootstrapped empty current-data directory from %s", seed_dir)
+    return True
 
 
 def _json(path: Path, default: Any) -> Any:
@@ -33,11 +77,12 @@ def _csv(path: Path) -> pd.DataFrame:
 def _apply_runtime_graph_event_validity(graph: Any, events: list[dict[str, Any]]) -> Any:
     if graph is None:
         return graph
+    by_id = {str(event.get("Event_ID")): event for event in events if event.get("Event_ID") is not None}
     by_title = {str(event.get("Title", "")).strip(): event for event in events}
     for node_id, attrs in list(graph.nodes(data=True)):
         if attrs.get("node_type") != "Event":
             continue
-        event = by_title.get(str(attrs.get("name", "")).strip())
+        event = by_id.get(str(attrs.get("event_id"))) if attrs.get("event_id") else by_title.get(str(attrs.get("name", "")).strip())
         if event is None:
             attrs["event_status"] = "UNKNOWN"
             attrs["operational_current"] = "false"
@@ -60,20 +105,26 @@ def _temporal_roll_forward(
 ) -> tuple[Any, pd.DataFrame]:
     """Rebuild local current exposure when persisted event status is stale."""
     persisted_statuses = {
-        str(attrs.get("name", "")): str(attrs.get("event_status", ""))
+        str(attrs.get("event_id") or attrs.get("name", "")): str(attrs.get("event_status", ""))
         for _, attrs in graph.nodes(data=True)
         if attrs.get("node_type") == "Event"
     } if graph is not None else {}
     runtime_statuses = {
-        str(event.get("Title", "")): str(event.get("event_status", "UNKNOWN"))
+        str(event.get("Event_ID") or event.get("Title", "")): str(event.get("event_status", "UNKNOWN"))
         for event in events
     }
-    if persisted_statuses == runtime_statuses:
+    warehouse_ids = {
+        str(node_id) for node_id, attrs in graph.nodes(data=True)
+        if attrs.get("node_type") == "Warehouse"
+    } if graph is not None else set()
+    risk_ids = set(risk["Node_ID"].astype(str)) if "Node_ID" in risk else set()
+    risk_semantics_current = "Risk_Availability" in risk and warehouse_ids.issubset(risk_ids)
+    if persisted_statuses == runtime_statuses and risk_semantics_current:
         return graph, risk
     from src.dynamic_risk.refresh_current_state import _build_current_graph, _current_risk
 
     refreshed_graph = _build_current_graph(events)
-    refreshed_risk = _current_risk(refreshed_graph, impacts, baseline_override=risk)
+    refreshed_risk = _current_risk(refreshed_graph, impacts, baseline_override=risk if not risk.empty else None)
     return refreshed_graph, refreshed_risk
 
 

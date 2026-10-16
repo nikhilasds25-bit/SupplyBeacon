@@ -6,6 +6,7 @@ from typing import Any
 
 from src.event_extraction.temporal_validity import apply_runtime_temporal_status, is_currently_eligible
 from src.external_data.weather_collector import warehouse_weather_locations
+from .risk_views import network_summary
 
 
 def _iso_from_epoch(value: Any) -> str | None:
@@ -133,13 +134,28 @@ def build_live_situation(state: dict[str, Any], freshness: dict[str, Any]) -> di
     for item in signals:
         signal_by_location.setdefault(str(item["location"]).casefold(), []).append(item)
     raw_weather = state.get("weather", {}).get("cities", {}) or {}
-    represented = {str(key).split(":", 1)[0].casefold() for key in raw_weather}
+    represented = {
+        str(record.get("requested_city") or record.get("city") or key).split(":", 1)[0].casefold()
+        for key, record in raw_weather.items()
+        if isinstance(record, dict)
+        and not str(record.get("location_validation_status") or "").upper().startswith("REJECTED")
+        and not (
+            str(record.get("source_channel") or "").upper() == "WEATHERAPI"
+            and str(record.get("location_validation_status") or "").upper() != "VALIDATED"
+        )
+    }
     weather_rows = []
     for city in precise_locations:
         records = [
             _weather_record(city, key, record, signal_by_location)
             for key, record in raw_weather.items()
-            if str(key).split(":", 1)[0].casefold() == city.casefold() and isinstance(record, dict)
+            if isinstance(record, dict)
+            and str(record.get("requested_city") or record.get("city") or key).split(":", 1)[0].casefold() == city.casefold()
+            and not (
+                str(record.get("source_channel") or "").upper() == "WEATHERAPI"
+                and str(record.get("location_validation_status") or "").upper() != "VALIDATED"
+            )
+            and not str(record.get("location_validation_status") or "").upper().startswith("REJECTED")
         ]
         observations = [row for row in records if row["record_kind"] == "OBSERVATION"]
         forecasts = [row for row in records if row["record_kind"] == "DAILY_FORECAST"]
@@ -155,13 +171,8 @@ def build_live_situation(state: dict[str, Any], freshness: dict[str, Any]) -> di
     news = [item for item in signals if str(item["category"]).casefold() == "news"]
     relevant_news = [item for item in news if item["event_class"] in {"RISK_WARNING", "ACTUAL_DISRUPTION"}]
     filtered_news = [item for item in news if item not in relevant_news]
-    risk = state.get("risk")
-    levels = {"Low": 1, "Medium": 2, "High": 3, "Critical": 4}
-    overall = max(
-        (str(row.get("Risk_Level", "Low")) for row in risk.to_dict(orient="records")),
-        key=lambda value: levels.get(value, 0),
-        default="Unavailable",
-    ) if risk is not None and not risk.empty else "Unavailable"
+    network = network_summary(state)
+    overall = network["overall_risk_level"]
     affected_warehouses = sorted({warehouse for item in resolved for warehouse in item["graph_resolution"]["warehouse_ids"]})
     metadata = state.get("metadata", {})
     return {
@@ -177,6 +188,10 @@ def build_live_situation(state: dict[str, Any], freshness: dict[str, Any]) -> di
             "graph_resolved_events": len(resolved),
             "affected_warehouses": len(affected_warehouses),
             "network_risk": overall,
+            "monitored_entity_count": network["monitored_entity_count"],
+            "available_risk_entity_count": network["available_risk_entity_count"],
+            "unavailable_risk_entity_count": network["unavailable_risk_entity_count"],
+            "operationally_exposed_entity_count": network["operationally_exposed_entity_count"],
         },
         "signals": signals,
         "active_signals": active,
