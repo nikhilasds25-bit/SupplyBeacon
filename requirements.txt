@@ -1,13 +1,7 @@
-﻿pandas
-numpy
+-r requirements-api.txt
+# Optional research/training/UI dependencies, excluded from the API image.
 matplotlib
 scikit-learn
-requests
-networkx
 torch
 torch-geometric
-fastapi
-uvicorn
 streamlit
-langgraph==1.2.11
-langchain-core==1.6.3

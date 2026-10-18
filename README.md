@@ -10,6 +10,11 @@ The research problem is evidence fragmentation: a warning, a warehouse location,
 
 Documentation scope: checked against the public `main` tree at [`cda1ab8`](https://github.com/nikhilasds25-bit/SupplyBeacon/tree/cda1ab81d2ec6f401ff561c441c485ee394c0505). Local untracked artifacts are identified separately below. Implemented workflows remain subject to the known correctness defects documented in this README.
 
+## Railway deployment preparation
+
+The local deployment package is documented in [deploy/RAILWAY.md](deploy/RAILWAY.md). It adds the reviewed seed/aggregate metrics, an API-only dependency closure including `python-multipart`, a Linux/Python 3.13 wheel hash lock, a digest-pinned Docker base, restricted build inputs, and a public read-only entry point. It defaults CORS to `https://supply-beacon.vercel.app`, disables master writes, LLM use and tracing, and requires persistent runtime paths on Railway. These files must be reviewed and published manually; no push or deployment was performed. The public-tree audit below describes commit `cda1ab8`, before these deployment additions.
+
+The packaged artifacts are retained historical/simulated/derived evidence. Deployment preparation does not repair the known correctness defects or turn DataCo evaluations into live predictions. See the deployment guide for current validation and the remaining Linux Docker/Railway checks.
 ## Capabilities and workflows
 
 | Workflow | Implemented behavior |
@@ -185,13 +190,12 @@ Use a modern Python 3 environment (the Dockerfile specifies Python 3.13; Python 
 py -3 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-python -m pip install -r requirements.txt
-python -m pip install python-multipart
+python -m pip install -r requirements-api.txt
 Copy-Item .env.example .env
 python -m uvicorn src.api.app:app --host 127.0.0.1 --port 8780
 ```
 
-`python-multipart` is required by the implemented file-upload routes but is currently missing from `requirements.txt`. Most Python dependencies are unpinned, so clean-install compatibility remains to be verified. The repository Dockerfile also installs that requirements file without this additional dependency; its build/runtime was not verified here.
+`python-multipart` is required by the implemented file-upload routes and is now declared through `requirements-api.txt`, which is also included by the optional research `requirements.txt`. The prepared Dockerfile installs the pinned, hashed Linux API lock. A Linux Docker build and actual Railway rollout remain unverified; see the deployment guide.
 
 In a second terminal:
 
@@ -276,6 +280,6 @@ SupplyBeacon demonstrates how graph evidence, transparent business rules, and bo
 - Graph retrieval cannot discover missing relationships or prove causality. Embedding training and its value are not reproducible from the retained artifacts alone.
 - Historical ML results describe a different dataset. Raw DataCo inputs, feature timing, test-based model selection, and independent evaluation require further verification.
 - Browser demo access, a refresh key, CORS settings, and local write flags do not provide production identity, authorization, or multi-tenant isolation. No public deployment or production readiness is claimed.
-- Python dependency locking, the missing multipart requirement, publication/preparation of runtime artifacts, fresh-clone test execution, correction of the known defects above, and end-to-end runtime verification remain engineering follow-up work.
+- The local Railway preparation supplies dependency pins, multipart support, and reviewed runtime artifacts. Manual publication, Linux container verification, correction of the known defects above, and deployed end-to-end verification remain follow-up work.
 
 Future improvements include verified company inventory feeds, richer evidence coverage, reproducible graph representation experiments, independently evaluated historical models, calibrated uncertainty, operational validation of alternative candidates, and production security controls. These are proposed improvements, not implemented capabilities.

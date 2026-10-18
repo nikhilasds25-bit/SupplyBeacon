@@ -1,0 +1,3 @@
+
+# Seed checksums use exact bytes, independent of checkout platform.
+deploy/seed/** -text

@@ -1,0 +1,7 @@
+{
+  "target": "Days for shipping (real)",
+  "best_model_by_test_mae": "hist_gradient_boosting",
+  "train_rows": 134974,
+  "validation_rows": 28876,
+  "test_rows": 16669
+}

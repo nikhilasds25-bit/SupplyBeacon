@@ -1,0 +1,43 @@
+{
+  "purpose": "Reviewed retained research snapshot and aggregate DataCo evaluation metadata. No live collection or customer inventory.",
+  "snapshot_timestamp": "2026-10-13T06:18:50.414785+00:00",
+  "checksum": "sha256 over exact file bytes; preserve seed files with .gitattributes",
+  "files": {
+    "deploy/seed/analysis/dataco/modeling/baseline_metrics.csv": {
+      "sha256": "210f1dc82861725e8337e1cc5016330d4262be1333139699615e47ad14677fd8",
+      "bytes": 670
+    },
+    "deploy/seed/analysis/dataco/modeling/feature_audit.json": {
+      "sha256": "395fa07fe94a3ab70006a65bde46af61c3fc8568cb564b75934da992bb7856ec",
+      "bytes": 4116
+    },
+    "deploy/seed/analysis/dataco/modeling/run_summary.json": {
+      "sha256": "d600a2a19d637a0c012b5a7bbed99e3891ed388eaecc49bf3d33cf35ea93d982",
+      "bytes": 178
+    },
+    "deploy/seed/current/current_business_impacts.csv": {
+      "sha256": "c1fb5d179a3a323242f4d67465dcc91619a7bbf935e315738a5a510e5d80d14e",
+      "bytes": 3552
+    },
+    "deploy/seed/current/current_events.json": {
+      "sha256": "3e4085d965c43b77591f5798b3ec37085f4035392ce1aedd61e866125f7c02d5",
+      "bytes": 9773
+    },
+    "deploy/seed/current/current_risk_scores.csv": {
+      "sha256": "a9799bb3669982e7a47026d87964b51cb62b0d536532af9ca73bf416c12aab12",
+      "bytes": 735000
+    },
+    "deploy/seed/current/current_run_metadata.json": {
+      "sha256": "e38e873750539c0d218f93a6d979b88aee50a42a10bedcbf2416dcb6179c477b",
+      "bytes": 1562
+    },
+    "deploy/seed/current/current_supply_chain_graph.graphml": {
+      "sha256": "ac1f26908a482a7706cfcc68b859afdc765fb5215774a2174606a72721f786c5",
+      "bytes": 4271088
+    },
+    "deploy/seed/current/current_weather.json": {
+      "sha256": "5e5f8611b42cf08f05d74121009d0f7c8c33a4d3202e625e618490be8d95d4ee",
+      "bytes": 54141
+    }
+  }
+}

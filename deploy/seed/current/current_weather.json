@@ -1,0 +1,2178 @@
+{
+  "collected_at": "2026-10-13T06:18:56.131650+00:00",
+  "cities": {
+    "Ahmedabad": {
+      "city": "Ahmedabad",
+      "requested_city": "Ahmedabad",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 32.23,
+        "feels_like": 31.33,
+        "temp_min": 32.23,
+        "temp_max": 32.23,
+        "pressure": 1015,
+        "humidity": 32,
+        "sea_level": 1015,
+        "grnd_level": 1010
+      },
+      "dt": 1791872339,
+      "wind": {
+        "speed": 2,
+        "deg": 33,
+        "gust": 2.1
+      }
+    },
+    "Bengaluru": {
+      "city": "Bengaluru",
+      "requested_city": "Bengaluru",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 28.39,
+        "feels_like": 28.34,
+        "temp_min": 28.39,
+        "temp_max": 28.39,
+        "pressure": 1015,
+        "humidity": 44,
+        "sea_level": 1015,
+        "grnd_level": 918
+      },
+      "dt": 1791872340,
+      "wind": {
+        "speed": 4.52,
+        "deg": 70,
+        "gust": 5.54
+      }
+    },
+    "Bhiwandi": {
+      "city": "Bhiwandi",
+      "requested_city": "Bhiwandi",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 35.09,
+        "feels_like": 35.98,
+        "temp_min": 35.09,
+        "temp_max": 35.09,
+        "pressure": 1014,
+        "humidity": 35,
+        "sea_level": 1014,
+        "grnd_level": 1008
+      },
+      "dt": 1791872340,
+      "wind": {
+        "speed": 2.68,
+        "deg": 67,
+        "gust": 3.1
+      }
+    },
+    "Bhopal": {
+      "city": "Bhopal",
+      "requested_city": "Bhopal",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 30.31,
+        "feels_like": 31.19,
+        "temp_min": 30.31,
+        "temp_max": 30.31,
+        "pressure": 1017,
+        "humidity": 48,
+        "sea_level": 1017,
+        "grnd_level": 960
+      },
+      "dt": 1791872340,
+      "wind": {
+        "speed": 2.69,
+        "deg": 82,
+        "gust": 3.67
+      }
+    },
+    "Bhubaneswar": {
+      "city": "Bhubaneswar",
+      "requested_city": "Bhubaneswar",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 32.15,
+        "feels_like": 37.12,
+        "temp_min": 32.15,
+        "temp_max": 32.15,
+        "pressure": 1014,
+        "humidity": 59,
+        "sea_level": 1014,
+        "grnd_level": 1011
+      },
+      "dt": 1791872340,
+      "wind": {
+        "speed": 4.32,
+        "deg": 52,
+        "gust": 5.1
+      }
+    },
+    "Bihta": {
+      "city": "Bihta",
+      "requested_city": "Bihta",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 803,
+          "main": "Clouds",
+          "description": "broken clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 31.32,
+        "feels_like": 33.81,
+        "temp_min": 31.32,
+        "temp_max": 31.32,
+        "pressure": 1016,
+        "humidity": 53,
+        "sea_level": 1016,
+        "grnd_level": 1009
+      },
+      "dt": 1791872340,
+      "wind": {
+        "speed": 0.14,
+        "deg": 82,
+        "gust": 1.04
+      }
+    },
+    "Chandigarh": {
+      "city": "Chandigarh",
+      "requested_city": "Chandigarh",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 29.41,
+        "feels_like": 29.94,
+        "temp_min": 29.41,
+        "temp_max": 29.41,
+        "pressure": 1017,
+        "humidity": 48,
+        "sea_level": 1017,
+        "grnd_level": 977
+      },
+      "dt": 1791872328,
+      "wind": {
+        "speed": 3.16,
+        "deg": 170,
+        "gust": 3.21
+      }
+    },
+    "Chennai": {
+      "city": "Chennai",
+      "requested_city": "Chennai",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 33.89,
+        "feels_like": 40.89,
+        "temp_min": 33.89,
+        "temp_max": 33.89,
+        "pressure": 1013,
+        "humidity": 59,
+        "sea_level": 1013,
+        "grnd_level": 1012
+      },
+      "dt": 1791871922,
+      "wind": {
+        "speed": 6.34,
+        "deg": 46,
+        "gust": 7
+      }
+    },
+    "Coimbatore": {
+      "city": "Coimbatore",
+      "requested_city": "Coimbatore",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 33.15,
+        "feels_like": 34.24,
+        "temp_min": 33.15,
+        "temp_max": 33.15,
+        "pressure": 1014,
+        "humidity": 41,
+        "sea_level": 1014,
+        "grnd_level": 964
+      },
+      "dt": 1791872341,
+      "wind": {
+        "speed": 5.05,
+        "deg": 60,
+        "gust": 6.26
+      }
+    },
+    "Delhi": {
+      "city": "Delhi",
+      "requested_city": "Delhi",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 27.6,
+        "feels_like": 28.01,
+        "temp_min": 27.6,
+        "temp_max": 27.6,
+        "pressure": 1017,
+        "humidity": 50,
+        "sea_level": 1017,
+        "grnd_level": 991
+      },
+      "dt": 1791872182,
+      "wind": {
+        "speed": 0.93,
+        "deg": 132,
+        "gust": 1.29
+      }
+    },
+    "Ernakulam": {
+      "city": "Ernakulam",
+      "requested_city": "Ernakulam",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 32.53,
+        "feels_like": 37.07,
+        "temp_min": 32.53,
+        "temp_max": 32.53,
+        "pressure": 1012,
+        "humidity": 56,
+        "sea_level": 1012,
+        "grnd_level": 1011
+      },
+      "dt": 1791872342,
+      "wind": {
+        "speed": 1.35,
+        "deg": 194,
+        "gust": 1.96
+      }
+    },
+    "Faridabad": {
+      "city": "Faridabad",
+      "requested_city": "Faridabad",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 28.09,
+        "feels_like": 28.64,
+        "temp_min": 28.09,
+        "temp_max": 28.09,
+        "pressure": 1017,
+        "humidity": 51,
+        "sea_level": 1017,
+        "grnd_level": 991
+      },
+      "dt": 1791872342,
+      "wind": {
+        "speed": 1.75,
+        "deg": 148,
+        "gust": 1.94
+      }
+    },
+    "Greater Noida": {
+      "city": "Greater Noida",
+      "requested_city": "Greater Noida",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 28.38,
+        "feels_like": 28.89,
+        "temp_min": 28.38,
+        "temp_max": 28.38,
+        "pressure": 1017,
+        "humidity": 50,
+        "sea_level": 1017,
+        "grnd_level": 993
+      },
+      "dt": 1791872343,
+      "wind": {
+        "speed": 1.4,
+        "deg": 144,
+        "gust": 1.8
+      }
+    },
+    "Gurugram": {
+      "city": "Gurugram",
+      "requested_city": "Gurugram",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 28.23,
+        "feels_like": 28.81,
+        "temp_min": 28.23,
+        "temp_max": 28.23,
+        "pressure": 1017,
+        "humidity": 51,
+        "sea_level": 1017,
+        "grnd_level": 990
+      },
+      "dt": 1791872323,
+      "wind": {
+        "speed": 1.83,
+        "deg": 145,
+        "gust": 1.71
+      }
+    },
+    "Guwahati": {
+      "city": "Guwahati",
+      "requested_city": "Guwahati",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 32.35,
+        "feels_like": 37.91,
+        "temp_min": 32.35,
+        "temp_max": 32.35,
+        "pressure": 1015,
+        "humidity": 60,
+        "sea_level": 1015,
+        "grnd_level": 1002
+      },
+      "dt": 1791872343,
+      "wind": {
+        "speed": 2.31,
+        "deg": 43,
+        "gust": 2.25
+      }
+    },
+    "Haridwar": {
+      "city": "Haridwar",
+      "requested_city": "Haridwar",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 27.1,
+        "feels_like": 28.52,
+        "temp_min": 27.1,
+        "temp_max": 27.1,
+        "pressure": 1018,
+        "humidity": 64,
+        "sea_level": 1018,
+        "grnd_level": 974
+      },
+      "dt": 1791872344,
+      "wind": {
+        "speed": 1.68,
+        "deg": 210,
+        "gust": 1.62
+      }
+    },
+    "Hyderabad": {
+      "city": "Hyderabad",
+      "requested_city": "Hyderabad",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 32.97,
+        "feels_like": 33.32,
+        "temp_min": 32.97,
+        "temp_max": 32.97,
+        "pressure": 1016,
+        "humidity": 38,
+        "sea_level": 1016,
+        "grnd_level": 952
+      },
+      "dt": 1791872345,
+      "wind": {
+        "speed": 5.09,
+        "deg": 50,
+        "gust": 7
+      }
+    },
+    "Jammu": {
+      "city": "Jammu",
+      "requested_city": "Jammu",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 29.19,
+        "feels_like": 29.43,
+        "temp_min": 29.19,
+        "temp_max": 29.19,
+        "pressure": 1017,
+        "humidity": 46,
+        "sea_level": 1017,
+        "grnd_level": 978
+      },
+      "dt": 1791872345,
+      "wind": {
+        "speed": 2.48,
+        "deg": 183,
+        "gust": 2.8
+      }
+    },
+    "Karnal": {
+      "city": "Karnal",
+      "requested_city": "Karnal",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 28.23,
+        "feels_like": 29.12,
+        "temp_min": 28.23,
+        "temp_max": 28.23,
+        "pressure": 1017,
+        "humidity": 54,
+        "sea_level": 1017,
+        "grnd_level": 988
+      },
+      "dt": 1791872345,
+      "wind": {
+        "speed": 2.38,
+        "deg": 99,
+        "gust": 2.58
+      }
+    },
+    "Kochi": {
+      "city": "Kochi",
+      "requested_city": "Kochi",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 32.23,
+        "feels_like": 37.31,
+        "temp_min": 32.23,
+        "temp_max": 32.23,
+        "pressure": 1012,
+        "humidity": 59,
+        "sea_level": 1012,
+        "grnd_level": 1011
+      },
+      "dt": 1791872326,
+      "wind": {
+        "speed": 1.5,
+        "deg": 204,
+        "gust": 1.97
+      }
+    },
+    "Kolkata": {
+      "city": "Kolkata",
+      "requested_city": "Kolkata",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 34.16,
+        "feels_like": 39.1,
+        "temp_min": 34.16,
+        "temp_max": 34.16,
+        "pressure": 1015,
+        "humidity": 51,
+        "sea_level": 1015,
+        "grnd_level": 1013
+      },
+      "dt": 1791872346,
+      "wind": {
+        "speed": 3.73,
+        "deg": 29,
+        "gust": 3.82
+      }
+    },
+    "Lucknow": {
+      "city": "Lucknow",
+      "requested_city": "Lucknow",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 27.97,
+        "feels_like": 29.09,
+        "temp_min": 27.97,
+        "temp_max": 27.97,
+        "pressure": 1017,
+        "humidity": 57,
+        "sea_level": 1017,
+        "grnd_level": 1002
+      },
+      "dt": 1791872346,
+      "wind": {
+        "speed": 1.03,
+        "deg": 65,
+        "gust": 0.96
+      }
+    },
+    "Ludhiana": {
+      "city": "Ludhiana",
+      "requested_city": "Ludhiana",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 801,
+          "main": "Clouds",
+          "description": "few clouds",
+          "icon": "02d"
+        }
+      ],
+      "main": {
+        "temp": 31.2,
+        "feels_like": 30.62,
+        "temp_min": 31.2,
+        "temp_max": 31.2,
+        "pressure": 1016,
+        "humidity": 36,
+        "sea_level": 1016,
+        "grnd_level": 988
+      },
+      "dt": 1791872346,
+      "wind": {
+        "speed": 2.39,
+        "deg": 147,
+        "gust": 2.95
+      }
+    },
+    "Luhari": {
+      "city": "Luhari",
+      "requested_city": "Luhari",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 32.2,
+        "feels_like": 31.17,
+        "temp_min": 32.2,
+        "temp_max": 32.2,
+        "pressure": 1016,
+        "humidity": 31,
+        "sea_level": 1016,
+        "grnd_level": 959
+      },
+      "dt": 1791872346,
+      "wind": {
+        "speed": 0.95,
+        "deg": 100,
+        "gust": 1.58
+      }
+    },
+    "Maheshtala": {
+      "city": "Maheshtala",
+      "requested_city": "Maheshtala",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 34.14,
+        "feels_like": 38.36,
+        "temp_min": 34.14,
+        "temp_max": 34.14,
+        "pressure": 1014,
+        "humidity": 49,
+        "sea_level": 1014,
+        "grnd_level": 1013
+      },
+      "dt": 1791872346,
+      "wind": {
+        "speed": 3.59,
+        "deg": 28,
+        "gust": 3.71
+      }
+    },
+    "Mannur": {
+      "city": "Mannur",
+      "requested_city": "Mannur",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 33.62,
+        "feels_like": 37.57,
+        "temp_min": 33.62,
+        "temp_max": 33.62,
+        "pressure": 1013,
+        "humidity": 50,
+        "sea_level": 1013,
+        "grnd_level": 1007
+      },
+      "dt": 1791872347,
+      "wind": {
+        "speed": 6.59,
+        "deg": 47,
+        "gust": 6.6
+      }
+    },
+    "Morinda": {
+      "city": "Morinda",
+      "requested_city": "Morinda",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 30.51,
+        "feels_like": 30.71,
+        "temp_min": 30.51,
+        "temp_max": 30.51,
+        "pressure": 1017,
+        "humidity": 43,
+        "sea_level": 1017,
+        "grnd_level": 984
+      },
+      "dt": 1791872347,
+      "wind": {
+        "speed": 3.05,
+        "deg": 166,
+        "gust": 3.34
+      }
+    },
+    "Mumbai": {
+      "city": "Mumbai",
+      "requested_city": "Mumbai",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 34.77,
+        "feels_like": 38.02,
+        "temp_min": 34.77,
+        "temp_max": 34.77,
+        "pressure": 1014,
+        "humidity": 44,
+        "sea_level": 1014,
+        "grnd_level": 1014
+      },
+      "dt": 1791872347,
+      "wind": {
+        "speed": 2.57,
+        "deg": 54,
+        "gust": 2.98
+      }
+    },
+    "Nagpur": {
+      "city": "Nagpur",
+      "requested_city": "Nagpur",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 31.56,
+        "feels_like": 34.26,
+        "temp_min": 31.56,
+        "temp_max": 31.56,
+        "pressure": 1016,
+        "humidity": 53,
+        "sea_level": 1016,
+        "grnd_level": 981
+      },
+      "dt": 1791872347,
+      "wind": {
+        "speed": 3.02,
+        "deg": 62,
+        "gust": 3.4
+      }
+    },
+    "New Delhi": {
+      "city": "New Delhi",
+      "requested_city": "New Delhi",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 27.13,
+        "feels_like": 27.61,
+        "temp_min": 27.13,
+        "temp_max": 27.13,
+        "pressure": 1017,
+        "humidity": 51,
+        "sea_level": 1017,
+        "grnd_level": 990
+      },
+      "dt": 1791872347,
+      "wind": {
+        "speed": 1.24,
+        "deg": 140,
+        "gust": 1.47
+      }
+    },
+    "Noida": {
+      "city": "Noida",
+      "requested_city": "Noida",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 27.63,
+        "feels_like": 28.13,
+        "temp_min": 27.63,
+        "temp_max": 27.63,
+        "pressure": 1017,
+        "humidity": 51,
+        "sea_level": 1017,
+        "grnd_level": 991
+      },
+      "dt": 1791872347,
+      "wind": {
+        "speed": 1.22,
+        "deg": 143,
+        "gust": 1.6
+      }
+    },
+    "Pardi": {
+      "city": "Pardi",
+      "requested_city": "Pardi",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 33.75,
+        "feels_like": 35.51,
+        "temp_min": 33.75,
+        "temp_max": 33.75,
+        "pressure": 1015,
+        "humidity": 42,
+        "sea_level": 1015,
+        "grnd_level": 1013
+      },
+      "dt": 1791872138,
+      "wind": {
+        "speed": 2.48,
+        "deg": 26,
+        "gust": 3.18
+      }
+    },
+    "Puducherry": {
+      "city": "Puducherry",
+      "requested_city": "Puducherry",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 803,
+          "main": "Clouds",
+          "description": "broken clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 34.87,
+        "feels_like": 39.99,
+        "temp_min": 34.87,
+        "temp_max": 34.87,
+        "pressure": 1013,
+        "humidity": 49,
+        "sea_level": 1013,
+        "grnd_level": 1011
+      },
+      "dt": 1791872348,
+      "wind": {
+        "speed": 6.65,
+        "deg": 65,
+        "gust": 7.23
+      }
+    },
+    "Raipur": {
+      "city": "Raipur",
+      "requested_city": "Raipur",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 801,
+          "main": "Clouds",
+          "description": "few clouds",
+          "icon": "02d"
+        }
+      ],
+      "main": {
+        "temp": 28.68,
+        "feels_like": 30.23,
+        "temp_min": 28.68,
+        "temp_max": 28.68,
+        "pressure": 1016,
+        "humidity": 58,
+        "sea_level": 1016,
+        "grnd_level": 982
+      },
+      "dt": 1791871577,
+      "wind": {
+        "speed": 2.02,
+        "deg": 46,
+        "gust": 2.08
+      }
+    },
+    "Ramanagara": {
+      "city": "Ramanagara",
+      "requested_city": "Ramanagara",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 29.72,
+        "feels_like": 29.59,
+        "temp_min": 29.72,
+        "temp_max": 29.72,
+        "pressure": 1015,
+        "humidity": 42,
+        "sea_level": 1015,
+        "grnd_level": 932
+      },
+      "dt": 1791872348,
+      "wind": {
+        "speed": 4.52,
+        "deg": 74,
+        "gust": 5.7
+      }
+    },
+    "Ranchi": {
+      "city": "Ranchi",
+      "requested_city": "Ranchi",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 27.12,
+        "feels_like": 27.94,
+        "temp_min": 27.12,
+        "temp_max": 27.12,
+        "pressure": 1018,
+        "humidity": 56,
+        "sea_level": 1018,
+        "grnd_level": 943
+      },
+      "dt": 1791872165,
+      "wind": {
+        "speed": 2.25,
+        "deg": 87,
+        "gust": 1.67
+      }
+    },
+    "Ranjangaon": {
+      "city": "Ranjangaon",
+      "requested_city": "Ranjangaon",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 32.18,
+        "feels_like": 30.69,
+        "temp_min": 32.18,
+        "temp_max": 32.18,
+        "pressure": 1016,
+        "humidity": 27,
+        "sea_level": 1016,
+        "grnd_level": 940
+      },
+      "dt": 1791872349,
+      "wind": {
+        "speed": 5.2,
+        "deg": 55,
+        "gust": 5.49
+      }
+    },
+    "Roorkee": {
+      "city": "Roorkee",
+      "requested_city": "Roorkee",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 27.51,
+        "feels_like": 29.23,
+        "temp_min": 27.51,
+        "temp_max": 27.51,
+        "pressure": 1018,
+        "humidity": 65,
+        "sea_level": 1018,
+        "grnd_level": 986
+      },
+      "dt": 1791872168,
+      "wind": {
+        "speed": 2.01,
+        "deg": 136,
+        "gust": 2.24
+      }
+    },
+    "Sankrail": {
+      "city": "Sankrail",
+      "requested_city": "Sankrail",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 34.15,
+        "feels_like": 38.72,
+        "temp_min": 34.15,
+        "temp_max": 34.15,
+        "pressure": 1014,
+        "humidity": 50,
+        "sea_level": 1014,
+        "grnd_level": 1013
+      },
+      "dt": 1791872350,
+      "wind": {
+        "speed": 3.62,
+        "deg": 24,
+        "gust": 3.69
+      }
+    },
+    "Secunderabad": {
+      "city": "Secunderabad",
+      "requested_city": "Secunderabad",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 33.01,
+        "feels_like": 33.8,
+        "temp_min": 33.01,
+        "temp_max": 33.01,
+        "pressure": 1015,
+        "humidity": 40,
+        "sea_level": 1015,
+        "grnd_level": 952
+      },
+      "dt": 1791872115,
+      "wind": {
+        "speed": 4.8,
+        "deg": 49,
+        "gust": 6.94
+      }
+    },
+    "Sonipat": {
+      "city": "Sonipat",
+      "requested_city": "Sonipat",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 28.49,
+        "feels_like": 28.92,
+        "temp_min": 28.49,
+        "temp_max": 28.49,
+        "pressure": 1017,
+        "humidity": 49,
+        "sea_level": 1017,
+        "grnd_level": 991
+      },
+      "dt": 1791872122,
+      "wind": {
+        "speed": 0.25,
+        "deg": 288,
+        "gust": 1.01
+      }
+    },
+    "South Kalamassery": {
+      "city": "South Kalamassery",
+      "requested_city": "South Kalamassery",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 32.67,
+        "feels_like": 36.48,
+        "temp_min": 32.67,
+        "temp_max": 32.67,
+        "pressure": 1012,
+        "humidity": 53,
+        "sea_level": 1012,
+        "grnd_level": 1011
+      },
+      "dt": 1791872350,
+      "wind": {
+        "speed": 1.14,
+        "deg": 175,
+        "gust": 2.24
+      }
+    },
+    "Sriperumbudur": {
+      "city": "Sriperumbudur",
+      "requested_city": "Sriperumbudur",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 33.64,
+        "feels_like": 37.61,
+        "temp_min": 33.64,
+        "temp_max": 33.64,
+        "pressure": 1013,
+        "humidity": 50,
+        "sea_level": 1013,
+        "grnd_level": 1007
+      },
+      "dt": 1791872350,
+      "wind": {
+        "speed": 6.57,
+        "deg": 47,
+        "gust": 6.58
+      }
+    },
+    "Thiruvananthapuram": {
+      "city": "Thiruvananthapuram",
+      "requested_city": "Thiruvananthapuram",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 804,
+          "main": "Clouds",
+          "description": "overcast clouds",
+          "icon": "04d"
+        }
+      ],
+      "main": {
+        "temp": 33.66,
+        "feels_like": 40.66,
+        "temp_min": 33.66,
+        "temp_max": 33.66,
+        "pressure": 1012,
+        "humidity": 63,
+        "sea_level": 1012,
+        "grnd_level": 1008
+      },
+      "dt": 1791872350,
+      "wind": {
+        "speed": 1.5,
+        "deg": 199,
+        "gust": 2.81
+      }
+    },
+    "Tirupati": {
+      "city": "Tirupati",
+      "requested_city": "Tirupati",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 802,
+          "main": "Clouds",
+          "description": "scattered clouds",
+          "icon": "03d"
+        }
+      ],
+      "main": {
+        "temp": 30.33,
+        "feels_like": 31.38,
+        "temp_min": 30.33,
+        "temp_max": 30.33,
+        "pressure": 1014,
+        "humidity": 49,
+        "sea_level": 1014,
+        "grnd_level": 975
+      },
+      "dt": 1791872350,
+      "wind": {
+        "speed": 4.56,
+        "deg": 46,
+        "gust": 5.05
+      }
+    },
+    "Vikhroli": {
+      "city": "Vikhroli",
+      "requested_city": "Vikhroli",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 35.07,
+        "feels_like": 37.35,
+        "temp_min": 35.07,
+        "temp_max": 35.07,
+        "pressure": 1014,
+        "humidity": 40,
+        "sea_level": 1014,
+        "grnd_level": 1012
+      },
+      "dt": 1791872351,
+      "wind": {
+        "speed": 2.21,
+        "deg": 63,
+        "gust": 2.78
+      }
+    },
+    "Visakhapatnam": {
+      "city": "Visakhapatnam",
+      "requested_city": "Visakhapatnam",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "id": 800,
+          "main": "Clear",
+          "description": "clear sky",
+          "icon": "01d"
+        }
+      ],
+      "main": {
+        "temp": 32.97,
+        "feels_like": 37.75,
+        "temp_min": 32.97,
+        "temp_max": 32.97,
+        "pressure": 1014,
+        "humidity": 55,
+        "sea_level": 1014,
+        "grnd_level": 1008
+      },
+      "dt": 1791872351,
+      "wind": {
+        "speed": 5.13,
+        "deg": 63,
+        "gust": 5.88
+      }
+    },
+    "Ahmedabad:WEATHERAPI": {
+      "city": "Ahmedabad",
+      "requested_city": "Ahmedabad",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872353,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 10.1,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Bengaluru:WEATHERAPI": {
+      "city": "Bengaluru",
+      "requested_city": "Bengaluru",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872355,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 17.3,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Bhiwandi:WEATHERAPI": {
+      "city": "Bhiwandi",
+      "requested_city": "Bhiwandi",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872356,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 10.8,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Bhopal:WEATHERAPI": {
+      "city": "Bhopal",
+      "requested_city": "Bhopal",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872356,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 10.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Bhubaneswar:WEATHERAPI": {
+      "city": "Bhubaneswar",
+      "requested_city": "Bhubaneswar",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872357,
+      "daily_precipitation_mm": 0.74,
+      "max_wind_kph": 15.1,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Bihta:WEATHERAPI": {
+      "city": "Bihta",
+      "requested_city": "Bihta",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872358,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 12.2,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Chandigarh:WEATHERAPI": {
+      "city": "Chandigarh",
+      "requested_city": "Chandigarh",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872359,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 12.6,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Chennai:WEATHERAPI": {
+      "city": "Chennai",
+      "requested_city": "Chennai",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872360,
+      "daily_precipitation_mm": 0.01,
+      "max_wind_kph": 27.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Coimbatore:WEATHERAPI": {
+      "city": "Coimbatore",
+      "requested_city": "Coimbatore",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Overcast",
+          "description": "Overcast"
+        }
+      ],
+      "dt": 1791872361,
+      "daily_precipitation_mm": 1.77,
+      "max_wind_kph": 16.6,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Delhi:WEATHERAPI": {
+      "city": "Delhi",
+      "requested_city": "Delhi",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872362,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 13.0,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Ernakulam:WEATHERAPI": {
+      "city": "Ernakulam",
+      "requested_city": "Ernakulam",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Overcast",
+          "description": "Overcast"
+        }
+      ],
+      "dt": 1791872363,
+      "daily_precipitation_mm": 2.69,
+      "max_wind_kph": 18.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Faridabad:WEATHERAPI": {
+      "city": "Faridabad",
+      "requested_city": "Faridabad",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872364,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 13.0,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Greater Noida:WEATHERAPI": {
+      "city": "Greater Noida",
+      "requested_city": "Greater Noida",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872368,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 11.5,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Gurugram:WEATHERAPI": {
+      "city": "Gurugram",
+      "requested_city": "Gurugram",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872370,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 11.9,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Guwahati:WEATHERAPI": {
+      "city": "Guwahati",
+      "requested_city": "Guwahati",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872371,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 10.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Haridwar:WEATHERAPI": {
+      "city": "Haridwar",
+      "requested_city": "Haridwar",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872372,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 8.3,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Hyderabad:WEATHERAPI": {
+      "city": "Hyderabad",
+      "requested_city": "Hyderabad",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872374,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 16.9,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Jammu:WEATHERAPI": {
+      "city": "Jammu",
+      "requested_city": "Jammu",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872375,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 12.2,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Karnal:WEATHERAPI": {
+      "city": "Karnal",
+      "requested_city": "Karnal",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872376,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 10.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Kochi:WEATHERAPI": {
+      "city": "Kochi",
+      "requested_city": "Kochi",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Overcast",
+          "description": "Overcast"
+        }
+      ],
+      "dt": 1791872377,
+      "daily_precipitation_mm": 2.69,
+      "max_wind_kph": 18.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Kolkata:WEATHERAPI": {
+      "city": "Kolkata",
+      "requested_city": "Kolkata",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872378,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 14.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Lucknow:WEATHERAPI": {
+      "city": "Lucknow",
+      "requested_city": "Lucknow",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872379,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 7.9,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Ludhiana:WEATHERAPI": {
+      "city": "Ludhiana",
+      "requested_city": "Ludhiana",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872379,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 13.0,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Maheshtala:WEATHERAPI": {
+      "city": "Maheshtala",
+      "requested_city": "Maheshtala",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872381,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 14.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Mannur:WEATHERAPI": {
+      "city": "Mannur",
+      "requested_city": "Mannur",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872383,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 28.1,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Morinda:WEATHERAPI": {
+      "city": "Morinda",
+      "requested_city": "Morinda",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872384,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 12.6,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Mumbai:WEATHERAPI": {
+      "city": "Mumbai",
+      "requested_city": "Mumbai",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872385,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 27.0,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Nagpur:WEATHERAPI": {
+      "city": "Nagpur",
+      "requested_city": "Nagpur",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872386,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 10.8,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "New Delhi:WEATHERAPI": {
+      "city": "New Delhi",
+      "requested_city": "New Delhi",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872387,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 13.0,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Noida:WEATHERAPI": {
+      "city": "Noida",
+      "requested_city": "Noida",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872388,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 13.0,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Pardi:WEATHERAPI": {
+      "city": "Pardi",
+      "requested_city": "Pardi",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872389,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 10.1,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Puducherry:WEATHERAPI": {
+      "city": "Puducherry",
+      "requested_city": "Puducherry",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Overcast",
+          "description": "Overcast"
+        }
+      ],
+      "dt": 1791872390,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 29.9,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Raipur:WEATHERAPI": {
+      "city": "Raipur",
+      "requested_city": "Raipur",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872391,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 8.6,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Ramanagara:WEATHERAPI": {
+      "city": "Ramanagara",
+      "requested_city": "Ramanagara",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872392,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 17.3,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Ranchi:WEATHERAPI": {
+      "city": "Ranchi",
+      "requested_city": "Ranchi",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872393,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 8.6,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Ranjangaon:WEATHERAPI": {
+      "city": "Ranjangaon",
+      "requested_city": "Ranjangaon",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872394,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 20.5,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Roorkee:WEATHERAPI": {
+      "city": "Roorkee",
+      "requested_city": "Roorkee",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872395,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 8.6,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Sankrail:WEATHERAPI": {
+      "city": "Sankrail",
+      "requested_city": "Sankrail",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Smoky haze",
+          "description": "Smoky haze"
+        }
+      ],
+      "dt": 1791872396,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 14.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Sonipat:WEATHERAPI": {
+      "city": "Sonipat",
+      "requested_city": "Sonipat",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872398,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 11.9,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "South Kalamassery:WEATHERAPI": {
+      "city": "South Kalamassery",
+      "requested_city": "South Kalamassery",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Overcast",
+          "description": "Overcast"
+        }
+      ],
+      "dt": 1791872399,
+      "daily_precipitation_mm": 2.69,
+      "max_wind_kph": 18.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Sriperumbudur:WEATHERAPI": {
+      "city": "Sriperumbudur",
+      "requested_city": "Sriperumbudur",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872400,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 28.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Thiruvananthapuram:WEATHERAPI": {
+      "city": "Thiruvananthapuram",
+      "requested_city": "Thiruvananthapuram",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Overcast",
+          "description": "Overcast"
+        }
+      ],
+      "dt": 1791872401,
+      "daily_precipitation_mm": 3.36,
+      "max_wind_kph": 14.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Tirupati:WEATHERAPI": {
+      "city": "Tirupati",
+      "requested_city": "Tirupati",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872402,
+      "daily_precipitation_mm": 0.07,
+      "max_wind_kph": 29.2,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Vikhroli:WEATHERAPI": {
+      "city": "Vikhroli",
+      "requested_city": "Vikhroli",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872404,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 27.0,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    },
+    "Visakhapatnam:WEATHERAPI": {
+      "city": "Visakhapatnam",
+      "requested_city": "Visakhapatnam",
+      "source_channel": "WEATHERAPI",
+      "record_kind": "DAILY_FORECAST",
+      "location_validation_status": "VALIDATED",
+      "weather": [
+        {
+          "main": "Sunny",
+          "description": "Sunny"
+        }
+      ],
+      "dt": 1791872405,
+      "daily_precipitation_mm": 0.0,
+      "max_wind_kph": 18.4,
+      "forecast_date": "2026-10-13",
+      "alerts": []
+    }
+  }
+}

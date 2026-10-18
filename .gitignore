@@ -45,3 +45,12 @@ dist/
 frontend/dist/
 coverage/
 .vite/
+
+.env.bak
+.env.*.bak
+.runtime_deps/
+.venv-*/
+data/current/
+data/persistent/
+data/snapshot_backups/
+.pytest_tmp*/

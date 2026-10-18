@@ -33,12 +33,18 @@ def test_app_startup_seeds_current_data_and_preserves_restart_state(tmp_path, mo
     marker = current_dir / "restart-marker.test"
     marker.write_text("runtime state", encoding="utf-8")
     original_events = (current_dir / "current_events.json").read_bytes()
+    import sqlite3
+    with sqlite3.connect(database_path) as database:
+        database.execute("INSERT OR REPLACE INTO master_meta(key,value) VALUES(?,?)",
+                         ("restart_test", "preserve existing SQLite data"))
 
     with TestClient(api_module.app):
         assert marker.read_text(encoding="utf-8") == "runtime state"
         assert (current_dir / "current_events.json").read_bytes() == original_events
         assert database_path.is_file()
         assert generated_dir.is_dir()
+        with sqlite3.connect(database_path) as database:
+            assert database.execute("SELECT value FROM master_meta WHERE key='restart_test'").fetchone()[0] == "preserve existing SQLite data"
 
 
 def test_bootstrap_copies_seed_into_empty_persistent_directory(tmp_path, monkeypatch):

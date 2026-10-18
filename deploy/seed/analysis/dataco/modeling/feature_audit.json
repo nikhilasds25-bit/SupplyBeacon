@@ -1,0 +1,100 @@
+{
+  "prediction_point": "ORDER CREATION / BEFORE SHIPMENT COMPLETION",
+  "target": {
+    "column": "Days for shipping (real)",
+    "meaning": "Observed historical shipping duration in days.",
+    "not_renamed_to": "Lead_Time_Days"
+  },
+  "features": {
+    "Days for shipment (scheduled)": {
+      "meaning": "Promised or planned shipment duration.",
+      "availability": "Available at order creation if the schedule is committed then.",
+      "included": true,
+      "reason": "Operational plan known before realized outcome; verify this assumption for deployment."
+    },
+    "Shipping Mode": {
+      "meaning": "Selected delivery/shipping service.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Order-time operational choice."
+    },
+    "Product Name": {
+      "meaning": "Ordered product identity.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Order content known before fulfillment."
+    },
+    "Category Name": {
+      "meaning": "Product category.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Product metadata known before fulfillment."
+    },
+    "Market": {
+      "meaning": "Commercial market.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Order geography/business context."
+    },
+    "Order Region": {
+      "meaning": "Destination region.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Destination context known from the order."
+    },
+    "Order Country": {
+      "meaning": "Destination country.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Destination context known from the order."
+    },
+    "Order City": {
+      "meaning": "Destination city.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Destination context known from the order."
+    },
+    "Order Item Quantity": {
+      "meaning": "Quantity in the order item.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Order quantity is known before fulfillment."
+    },
+    "Sales": {
+      "meaning": "Recorded sales amount.",
+      "availability": "Assumed available at order creation.",
+      "included": true,
+      "reason": "Retained as an order-value feature, subject to business-system timing validation."
+    },
+    "Order Item Total": {
+      "meaning": "Recorded order-item total.",
+      "availability": "Assumed available at order creation.",
+      "included": true,
+      "reason": "Retained as an order-value feature, subject to business-system timing validation."
+    },
+    "Product Price": {
+      "meaning": "Catalog product price.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Product/order metadata known before fulfillment."
+    },
+    "order date (DateOrders)": {
+      "meaning": "Order creation timestamp.",
+      "availability": "Available at order creation.",
+      "included": true,
+      "reason": "Only derived year, month, weekday, and quarter are used; raw timestamp is excluded."
+    }
+  },
+  "excluded_fields": {
+    "Days for shipping (real)": "Primary observed target.",
+    "Delivery Status": "Post-outcome status.",
+    "Late_delivery_risk": "Outcome label and target-adjacent.",
+    "shipping_delay_days": "Derived using realized shipping outcome.",
+    "shipping date (DateOrders)": "Known after shipment progression/outcome.",
+    "Order Status": "Potentially post-outcome or unavailable at order creation.",
+    "Order Profit Per Order": "Outcome-dependent financial field.",
+    "Customer PII": "Names, email, password, street, IDs, zipcodes, latitude, and longitude excluded.",
+    "Identifiers": "Order/product/customer identifiers excluded to avoid memorization and leakage.",
+    "Product Description": "Fully missing in the supplied dataset."
+  }
+}

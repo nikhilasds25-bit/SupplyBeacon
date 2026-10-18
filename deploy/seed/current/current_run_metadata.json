@@ -1,0 +1,58 @@
+{
+  "pipeline_run_timestamp": "2026-10-13T06:18:50.414785+00:00",
+  "run_timestamp": "2026-10-13T06:18:50.414785+00:00",
+  "weather_fetch_timestamp": "2026-10-13T06:18:56.131650+00:00",
+  "news_fetch_timestamp": "2026-10-13T06:20:05.827815+00:00",
+  "event_count": 4,
+  "raw_event_count": 4,
+  "operational_event_count": 0,
+  "excluded_event_count": 4,
+  "resolved_event_count": 0,
+  "unresolved_event_count": 0,
+  "location_resolved_count": 0,
+  "graph_entity_resolved_count": 0,
+  "graph_entity_unresolved_count": 0,
+  "collector_sources": {
+    "news": {
+      "NEWS_API": {
+        "success": true,
+        "fetched_count": 24,
+        "accepted_count": 23,
+        "error": null
+      },
+      "NEWSDATA_IO": {
+        "success": true,
+        "fetched_count": 10,
+        "accepted_count": 9,
+        "error": null
+      },
+      "CURRENTS_API": {
+        "success": true,
+        "fetched_count": 10,
+        "accepted_count": 10,
+        "error": null
+      }
+    },
+    "weather": {
+      "OPENWEATHER": {
+        "success": true,
+        "fetched_count": 55,
+        "accepted_count": 47,
+        "rejected_count": 0,
+        "request_failure_count": 8,
+        "error": null
+      },
+      "WEATHERAPI": {
+        "success": true,
+        "fetched_count": 55,
+        "accepted_count": 45,
+        "rejected_count": 10,
+        "request_failure_count": 0,
+        "error": null
+      }
+    }
+  },
+  "collector_failures": [],
+  "current_only": true,
+  "historical_files_used_as_current": false
+}
