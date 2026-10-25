@@ -5,6 +5,7 @@ import json
 import logging
 import os
 import shutil
+import threading
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from typing import Any
@@ -147,7 +148,7 @@ def load_current_metadata() -> dict[str, Any]:
     return _json(CURRENT_DIR / "current_run_metadata.json", {})
 
 
-def load_current_state() -> dict[str, Any]:
+def _load_current_state_uncached() -> dict[str, Any]:
     """Return current artifacts without reading historical external files."""
     metadata = _json(CURRENT_DIR / "current_run_metadata.json", {})
     weather = _json(CURRENT_DIR / "current_weather.json", {})
@@ -182,6 +183,97 @@ def load_current_state() -> dict[str, Any]:
         "graph": graph,
         "available": bool(metadata),
     }
+
+
+
+# Concurrent UI requests commonly ask for summary, live situation, products,
+# warehouses, suppliers, events and metadata at the same time. Rebuilding the
+# GraphML graph and rolling risk forward for every request can multiply memory
+# use on small containers. Share one derived state until an input artifact or
+# an event's runtime temporal status changes.
+_STATE_CACHE_LOCK = threading.RLock()
+_STATE_CACHE_SIGNATURE: tuple[Any, ...] | None = None
+_STATE_CACHE: dict[str, Any] | None = None
+
+
+def _current_state_cache_signature() -> tuple[Any, ...]:
+    overlay_dir = Path(
+        os.getenv(
+            "SUPPLYBEACON_MASTER_GENERATED_DIR",
+            str(BASE_DIR / "data" / "master" / "generated"),
+        )
+    ).expanduser()
+    paths = (
+        CURRENT_DIR / "current_run_metadata.json",
+        CURRENT_DIR / "current_weather.json",
+        CURRENT_DIR / "current_news.json",
+        CURRENT_DIR / "current_events.json",
+        CURRENT_DIR / "current_business_impacts.csv",
+        CURRENT_DIR / "current_risk_scores.csv",
+        CURRENT_DIR / "current_supply_chain_graph.graphml",
+        overlay_dir / "company_overlay.graphml",
+    )
+    file_signature: list[tuple[Any, ...]] = []
+    for path in paths:
+        try:
+            stat = path.stat()
+        except OSError:
+            file_signature.append((str(path.resolve()), None, None))
+        else:
+            file_signature.append((str(path.resolve()), stat.st_mtime_ns, stat.st_size))
+
+    # Runtime temporal status changes even when the seed files are immutable.
+    # Include it so a cached graph/risk view is rebuilt when an event becomes
+    # upcoming, active or expired.
+    raw_events = _json(CURRENT_DIR / "current_events.json", [])
+    if isinstance(raw_events, list):
+        temporal_signature = tuple(
+            (
+                str(event.get("Event_ID", event.get("event_id", ""))),
+                str(apply_runtime_temporal_status(event).get("event_status", "UNKNOWN")),
+            )
+            for event in raw_events
+            if isinstance(event, dict)
+        )
+    else:
+        temporal_signature = ()
+
+    return (
+        str(CURRENT_DIR.resolve()),
+        str(overlay_dir.resolve()),
+        tuple(file_signature),
+        temporal_signature,
+    )
+
+
+def load_current_state() -> dict[str, Any]:
+    """Load the current graph/risk state once per artifact and temporal version.
+
+    A lock coalesces simultaneous requests so a dashboard's parallel API calls
+    cannot each parse the GraphML and independently rebuild current risk.
+    Artifact modification and runtime event-status changes invalidate the cache.
+    """
+    global _STATE_CACHE_SIGNATURE, _STATE_CACHE
+
+    with _STATE_CACHE_LOCK:
+        for _attempt in range(2):
+            signature_before = _current_state_cache_signature()
+            if _STATE_CACHE is not None and signature_before == _STATE_CACHE_SIGNATURE:
+                return _STATE_CACHE
+
+            state = _load_current_state_uncached()
+            signature_after = _current_state_cache_signature()
+            if signature_after == signature_before:
+                _STATE_CACHE = state
+                _STATE_CACHE_SIGNATURE = signature_after
+                return state
+
+        # An artifact changed during both attempts. Key the value to the
+        # pre-load version so the next request cannot reuse a potentially mixed
+        # read; it will detect the newer version and rebuild.
+        _STATE_CACHE = state
+        _STATE_CACHE_SIGNATURE = signature_before
+        return state
 
 
 def freshness_label(metadata: dict[str, Any], now: datetime | None = None) -> tuple[str, bool]:
