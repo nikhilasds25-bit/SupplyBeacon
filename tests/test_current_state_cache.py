@@ -81,3 +81,54 @@ def test_legacy_query_resolves_retriever_on_each_request(monkeypatch):
     assert first.json()["current_metadata"]["version"] == "before refresh"
     assert second.json()["current_metadata"]["version"] == "after refresh"
     assert calls == ["before refresh", "after refresh"]
+
+
+
+def test_current_state_cache_reuses_state_and_invalidates_on_file_change(cached_state, monkeypatch):
+    current_dir = cached_state / "data" / "current"
+    calls = []
+
+    def build_state():
+        calls.append(len(calls) + 1)
+        return {"version": len(calls)}
+
+    monkeypatch.setattr(current_state, "_load_current_state_uncached", build_state)
+
+    first = current_state.load_current_state()
+    assert current_state.load_current_state() is first
+    assert calls == [1]
+
+    # A newly published risk artifact changes the cache signature.
+    (current_dir / "current_risk_scores.csv").write_text(
+        "Node_ID,Risk_Score\nWH_TEST,0.25\n", encoding="utf-8"
+    )
+    second = current_state.load_current_state()
+    assert second is not first
+    assert second == {"version": 2}
+    assert current_state.load_current_state() is second
+    assert calls == [1, 2]
+
+
+def test_current_state_cache_invalidates_when_event_temporal_status_changes(cached_state, monkeypatch):
+    statuses = ["UPCOMING"]
+    calls = []
+
+    monkeypatch.setattr(
+        current_state,
+        "apply_runtime_temporal_status",
+        lambda event: {**event, "event_status": statuses[0]},
+    )
+    def build_state():
+        calls.append("load")
+        return {"version": len(calls)}
+
+    monkeypatch.setattr(current_state, "_load_current_state_uncached", build_state)
+
+    upcoming = current_state.load_current_state()
+    assert current_state.load_current_state() is upcoming
+    assert len(calls) == 1
+
+    statuses[0] = "ACTIVE"
+    active = current_state.load_current_state()
+    assert active is not upcoming
+    assert len(calls) == 2

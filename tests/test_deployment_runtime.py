@@ -89,6 +89,16 @@ with TestClient(app) as client:
                  "/current/risk-watchlist", "/current/live-situation", "/master/status"]:
         response = client.get(path)
         assert response.status_code == 200, (path, response.text)
+    snapshot = client.get("/current/snapshot").json()
+    assert snapshot["summary"]["graph_nodes"] > 0
+    assert "summary" in snapshot["liveSituation"]
+    assert isinstance(snapshot["events"], list)
+    assert isinstance(snapshot["products"], list)
+    assert isinstance(snapshot["warehouses"], list)
+    assert isinstance(snapshot["suppliers"], list)
+    warehouse_066 = next(row for row in snapshot["warehouses"] if row["node_id"] == "WH_REAL_066")
+    assert str(warehouse_066["catalog_only"]).lower() == "true"
+    assert warehouse_066["inventory_relationship_available"] is False
     assert client.get("/master/status").json()["write_enabled"] is False
     assert client.post("/master/products", json={"name": "Blocked"}).status_code == 403
     assert client.post("/master/publish").status_code == 403
