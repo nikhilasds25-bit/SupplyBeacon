@@ -336,21 +336,26 @@ def health() -> dict[str, str]:
     return {"status": "ok", "system": "ElectroGraph-AI"}
 
 
-@app.get("/current/summary")
-def current_summary() -> dict[str, Any]:
-    state = load_current_state()
+def _current_summary_payload(
+    state: dict[str, Any],
+    product_rows: list[dict[str, Any]] | None = None,
+    warehouse_rows: list[dict[str, Any]] | None = None,
+    supplier_rows: list[dict[str, Any]] | None = None,
+) -> dict[str, Any]:
+    """Build current summary, optionally reusing rows from the combined snapshot."""
     risk = state["risk"]
     risky_levels = {"Medium", "High", "Critical"}
+    graph = state["graph"]
     monitored_ids = {
-        str(node_id) for node_id, attrs in state["graph"].nodes(data=True)
+        str(node_id) for node_id, attrs in graph.nodes(data=True)
         if attrs.get("node_type") in {"Warehouse", "Product", "Supplier"}
-    } if state["graph"] is not None else set()
+    } if graph is not None else set()
     high_critical = risk[
         risk["Risk_Level"].isin({"High", "Critical"}) & risk["Node_ID"].astype(str).isin(monitored_ids)
     ] if not risk.empty else risk
-    warehouse_rows = _warehouse_rows(state)
-    product_rows = _product_rows(state)
-    supplier_rows = _supplier_rows(state)
+    warehouse_rows = warehouse_rows if warehouse_rows is not None else _warehouse_rows(state)
+    product_rows = product_rows if product_rows is not None else _product_rows(state)
+    supplier_rows = supplier_rows if supplier_rows is not None else _supplier_rows(state)
     network = network_summary(state)
     risk_counts = {
         node_type: {
@@ -365,12 +370,40 @@ def current_summary() -> dict[str, Any]:
         "risky_products": sum(1 for row in product_rows if row["risk_level"] in risky_levels),
         "risky_suppliers": sum(1 for row in supplier_rows if row["risk_level"] in risky_levels),
         "high_critical_nodes": len(high_critical),
-        "graph_nodes": state["graph"].number_of_nodes() if state["graph"] is not None else 0,
-        "graph_edges": state["graph"].number_of_edges() if state["graph"] is not None else 0,
+        "graph_nodes": graph.number_of_nodes() if graph is not None else 0,
+        "graph_edges": graph.number_of_edges() if graph is not None else 0,
         "overall_risk_level": network["overall_risk_level"],
         **{key: value for key, value in network.items() if key != "overall_risk_level"},
         "risk_counts": risk_counts,
     }
+
+
+@app.get("/current/snapshot")
+def current_snapshot() -> dict[str, Any]:
+    """Return the initial dashboard payload with one shared graph/state traversal."""
+    state = load_current_state()
+    products = _product_rows(state)
+    warehouses = _warehouse_rows(state)
+    suppliers = _supplier_rows(state)
+    return {
+        "summary": _current_summary_payload(
+            state,
+            product_rows=products,
+            warehouse_rows=warehouses,
+            supplier_rows=suppliers,
+        ),
+        "liveSituation": build_live_situation(state, freshness_status(state["metadata"])),
+        "events": [_event_payload(event) for event in state["events"] if is_currently_eligible(event)],
+        "products": products,
+        "warehouses": warehouses,
+        "suppliers": suppliers,
+        "metadata": _metadata_payload(state),
+    }
+
+
+@app.get("/current/summary")
+def current_summary() -> dict[str, Any]:
+    return _current_summary_payload(load_current_state())
 
 
 @app.get("/current/risk-watchlist")
