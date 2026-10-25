@@ -83,22 +83,34 @@ export type AgenticResponse = {
 // backend origin so API requests cannot fall through to the frontend SPA.
 const configuredBase = String(import.meta.env.VITE_API_BASE_URL || '').trim()
 const base = (configuredBase || (import.meta.env.DEV ? '/api' : '')).replace(/\/+$/, '')
-async function request<T>(path:string, init?:RequestInit):Promise<T> {
+const DEFAULT_REQUEST_TIMEOUT_MS = 20_000
+const LONG_REQUEST_TIMEOUT_MS = 60_000
+
+async function request<T>(path:string, init?:RequestInit, timeoutMs = DEFAULT_REQUEST_TIMEOUT_MS):Promise<T> {
   if (import.meta.env.PROD && !configuredBase) {
     throw new Error('VITE_API_BASE_URL must be set to the deployed backend origin.')
   }
   const url = `${base}${path}`
-  let response:Response
+  const controller = new AbortController()
+  const timeoutId = window.setTimeout(() => controller.abort(), timeoutMs)
   try {
-    response = await fetch(url, init)
+    const response = await fetch(url, {...init, signal: controller.signal})
+    if (!response.ok) {
+      const detail = await response.text().catch(() => '')
+      throw new Error(`SupplyBeacon API request failed at ${url}: ${response.status}${detail ? ` ${detail}` : ''}`)
+    }
+    return await response.json() as T
   } catch (error) {
+    if (controller.signal.aborted) {
+      throw new Error(`SupplyBeacon API request timed out after ${Math.round(timeoutMs / 1000)} seconds at ${url}. The backend may be overloaded or the endpoint may be stalled.`)
+    }
+    if (error instanceof Error && error.message.startsWith('SupplyBeacon API request failed at ')) {
+      throw error
+    }
     throw new Error(`SupplyBeacon API could not be reached at ${url}: ${(error as Error).message}`)
+  } finally {
+    window.clearTimeout(timeoutId)
   }
-  if (!response.ok) {
-    const detail = await response.text().catch(() => '')
-    throw new Error(`SupplyBeacon API request failed at ${url}: ${response.status}${detail ? ` ${detail}` : ''}`)
-  }
-  return response.json() as Promise<T>
 }
 export function getCurrentSummary(){return request<CurrentSummary>('/current/summary')}
 export function getCurrentEvents(){return request<Event[]>('/current/events?operational_only=true')}
@@ -145,5 +157,5 @@ export async function getCurrentSnapshot():Promise<Snapshot>{
   const normalizedProducts=normalize(products,'Product'), normalizedWarehouses=normalize(warehouses,'Warehouse'), normalizedSuppliers=normalize(suppliers,'Supplier')
   return {summary,liveSituation,events,products:normalizedProducts,warehouses:normalizedWarehouses,suppliers:normalizedSuppliers,entities:[...normalizedProducts,...normalizedWarehouses,...normalizedSuppliers],metadata,provenance:'DERIVED / RULE_BASED'}
 }
-export function askSupplyBeacon(query:string){return request<any>('/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})})}
-export function askSupplyBeaconAgentic(query:string){return request<AgenticResponse>('/query/agentic',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})})}
+export function askSupplyBeacon(query:string){return request<any>('/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})},LONG_REQUEST_TIMEOUT_MS)}
+export function askSupplyBeaconAgentic(query:string){return request<AgenticResponse>('/query/agentic',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})},LONG_REQUEST_TIMEOUT_MS)}
