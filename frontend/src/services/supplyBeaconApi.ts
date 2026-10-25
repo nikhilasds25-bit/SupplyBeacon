@@ -147,15 +147,32 @@ export function confirmMasterImport(batchId:string){return request<Record<string
 export function getGraphEntity(nodeId:string){return request<GraphEntity>(`/current/graph/entity/${encodeURIComponent(nodeId)}`)}
 export function getHistoricalMetrics(){return request<Record<string,unknown>>('/historical/model-metrics')}
 export function refreshExternalSignals(){return request<Record<string,unknown>>('/current/refresh',{method:'POST'})}
+type CurrentSnapshotPayload = Pick<Snapshot, 'summary'|'liveSituation'|'events'|'products'|'warehouses'|'suppliers'|'metadata'>
+
 export async function getCurrentSnapshot():Promise<Snapshot>{
-  const [summary,liveSituation,events,products,warehouses,suppliers,metadata] = await Promise.all([
-    getCurrentSummary(),getLiveSituation(),getCurrentEvents(),getProducts(),getWarehouses(),getSuppliers(),getCurrentMetadata()
-  ])
-  const normalize = (items:Entity[], node_type:string) => items.map(item => {
-    return {...item, Node_ID:item.node_id, node_type, Node_Name:item.name, Risk_Level:item.risk_level, Risk_Score:item.risk_score, Connected_Events:item.connected_events}
-  })
-  const normalizedProducts=normalize(products,'Product'), normalizedWarehouses=normalize(warehouses,'Warehouse'), normalizedSuppliers=normalize(suppliers,'Supplier')
-  return {summary,liveSituation,events,products:normalizedProducts,warehouses:normalizedWarehouses,suppliers:normalizedSuppliers,entities:[...normalizedProducts,...normalizedWarehouses,...normalizedSuppliers],metadata,provenance:'DERIVED / RULE_BASED'}
+  // Keep the dashboard to one request so the backend computes each derived view
+  // once rather than rebuilding/traversing the same graph for seven concurrent calls.
+  const payload = await request<CurrentSnapshotPayload>('/current/snapshot', undefined, 60_000)
+  const normalize = (items:Entity[], node_type:string) => items.map(item => ({
+    ...item,
+    Node_ID:item.node_id,
+    node_type,
+    Node_Name:item.name,
+    Risk_Level:item.risk_level,
+    Risk_Score:item.risk_score,
+    Connected_Events:item.connected_events,
+  }))
+  const normalizedProducts=normalize(payload.products,'Product')
+  const normalizedWarehouses=normalize(payload.warehouses,'Warehouse')
+  const normalizedSuppliers=normalize(payload.suppliers,'Supplier')
+  return {
+    ...payload,
+    products:normalizedProducts,
+    warehouses:normalizedWarehouses,
+    suppliers:normalizedSuppliers,
+    entities:[...normalizedProducts,...normalizedWarehouses,...normalizedSuppliers],
+    provenance:'DERIVED / RULE_BASED',
+  }
 }
 export function askSupplyBeacon(query:string){return request<any>('/query',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})},LONG_REQUEST_TIMEOUT_MS)}
 export function askSupplyBeaconAgentic(query:string){return request<AgenticResponse>('/query/agentic',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({query})},LONG_REQUEST_TIMEOUT_MS)}
