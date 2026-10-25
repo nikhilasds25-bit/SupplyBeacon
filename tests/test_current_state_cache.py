@@ -118,11 +118,11 @@ def test_current_state_cache_invalidates_when_event_temporal_status_changes(cach
         "apply_runtime_temporal_status",
         lambda event: {**event, "event_status": statuses[0]},
     )
-    monkeypatch.setattr(
-        current_state,
-        "_load_current_state_uncached",
-        lambda: {"version": len(calls) + 1} if not calls.append("load") else {"version": len(calls)},
-    )
+    def build_state():
+        calls.append("load")
+        return {"version": len(calls)}
+
+    monkeypatch.setattr(current_state, "_load_current_state_uncached", build_state)
 
     upcoming = current_state.load_current_state()
     assert current_state.load_current_state() is upcoming
